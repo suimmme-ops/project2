@@ -75,7 +75,7 @@ if store.kind == "local":
 
 c1, c2 = st.columns([5, 1])
 with c2:
-    if st.button("🔄 새로고침", use_container_width=True):
+    if st.button("🔄 새로고침", width="stretch"):
         st.rerun()
 records = store.all()
 if not records:
@@ -132,7 +132,7 @@ with tabs[0]:
         rows.append(row)
     df = pd.DataFrame(rows)
     st.dataframe(
-        df, hide_index=True, use_container_width=True,
+        df, hide_index=True, width="stretch",
         column_config={f"{c['no']}. {c['title']}": st.column_config.ProgressColumn(f"{c['no']}. {c['title']}", min_value=0, max_value=100, format="%d%%") for c in CHAPTERS},
     )
     st.caption("막대는 문항 작성률이에요. '제출한 챕터'는 학생이 '선생님께 제출하기'를 누른 챕터예요. 챕터를 옮길 때도 자동으로 임시 저장돼요.")
@@ -201,7 +201,7 @@ with tabs[4]:
         if years:
             yd = pd.DataFrame({"연도": years})
             st.altair_chart(alt.Chart(yd).mark_bar(color="#e34948", cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
-                x=alt.X("연도:Q", bin=alt.Bin(step=10), title="학생이 고른 연도(10년 단위)"), y=alt.Y("count():Q", title="학생 수")).properties(height=260), use_container_width=True)
+                x=alt.X("연도:Q", bin=alt.Bin(step=10), title="학생이 고른 연도(10년 단위)"), y=alt.Y("count():Q", title="학생 수")).properties(height=260), width="stretch")
             st.caption(f"중앙값 {int(pd.Series(years).median())}년 · 수업에서 '왜 서로 다르게 골랐을까?'를 이야기해 보세요.")
         else:
             st.info("아직 답이 없어요.")
@@ -211,7 +211,7 @@ with tabs[4]:
         if len(sc):
             cd = sc.value_counts().rename_axis("변화").reset_index(name="학생 수")
             st.altair_chart(alt.Chart(cd).mark_bar(color="#2a78d6", cornerRadiusTopRight=4, cornerRadiusBottomRight=4).encode(
-                y=alt.Y("변화:N", sort="-x", title=None), x=alt.X("학생 수:Q")).properties(height=260), use_container_width=True)
+                y=alt.Y("변화:N", sort="-x", title=None), x=alt.X("학생 수:Q")).properties(height=260), width="stretch")
         else:
             st.info("아직 답이 없어요.")
     a, b = st.columns(2)
@@ -220,7 +220,7 @@ with tabs[4]:
         lg = pd.Series([fmt(r.get("answers", {}).get("c3_long")) for _, r in students]).replace("", pd.NA).dropna()
         if len(lg):
             st.altair_chart(alt.Chart(lg.value_counts().rename_axis("응답").reset_index(name="학생 수")).mark_bar(color="#ffd23f", stroke="#15151a").encode(
-                y=alt.Y("응답:N", title=None), x="학생 수:Q").properties(height=140), use_container_width=True)
+                y=alt.Y("응답:N", title=None), x="학생 수:Q").properties(height=140), width="stretch")
         else:
             st.info("아직 답이 없어요.")
     with b:
@@ -230,7 +230,7 @@ with tabs[4]:
         if ld["글자 수"].sum():
             st.altair_chart(alt.Chart(ld).mark_bar().encode(
                 x=alt.X("학생:N", title=None, sort=None), xOffset="시나리오:N", y="글자 수:Q",
-                color=alt.Color("시나리오:N", scale=alt.Scale(range=["#1baf7a", "#e34948"]))).properties(height=220), use_container_width=True)
+                color=alt.Color("시나리오:N", scale=alt.Scale(range=["#1baf7a", "#e34948"]))).properties(height=220), width="stretch")
         else:
             st.info("아직 답이 없어요.")
 
