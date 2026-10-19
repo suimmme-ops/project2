@@ -21,7 +21,8 @@ st.markdown(
     """<style>
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
     @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
-    html, body, [class*="st-"], .stMarkdown, button, input, textarea {font-family: "Pretendard Variable", Pretendard, sans-serif;}
+    html, body, .stApp, .stMarkdown, p, label, input, textarea, button, summary {font-family: "Pretendard Variable", Pretendard, sans-serif;}
+    [data-testid="stIconMaterial"], .material-symbols-rounded {font-family: "Material Symbols Rounded" !important;}
     .block-container {max-width: 1200px; padding-top: 5rem;}
     h1, h2, h3 {letter-spacing: -0.02em;}
     .hero {background:#5ec8f2;border:2.5px solid #15151a;border-radius:24px;box-shadow:7px 7px 0 #15151a;padding:26px 30px;margin-bottom:22px;}
