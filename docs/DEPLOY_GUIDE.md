@@ -3,7 +3,7 @@
 > 결과: `https://내앱이름.streamlit.app` 주소가 생기고, 학생들은 이 주소(또는 QR코드)로 접속합니다.
 
 ## 준비물
-- GitHub 저장소: `suimmme-ops/project` (이 코드가 들어 있는 곳)
+- GitHub 저장소: `suimmme-ops/project2` (이 코드가 들어 있는 곳)
 - GitHub 계정으로 로그인한 Streamlit Community Cloud: https://share.streamlit.io
 
 ## 1. 앱 만들기 (3분)
@@ -13,7 +13,7 @@
 
 | 칸 | 입력값 |
 |---|---|
-| Repository | `suimmme-ops/project` |
+| Repository | `suimmme-ops/project2` |
 | Branch | `main` |
 | Main file path | `streamlit_app.py` |
 | App URL | 원하는 주소 (예: `climate-wing-6-2`) |
