@@ -97,14 +97,23 @@ class FirestoreStore:
 
 
 @st.cache_resource(show_spinner=False)
+def _firestore(conf_json: str) -> FirestoreStore:
+    return FirestoreStore(json.loads(conf_json))
+
+
 def get_store():
+    """Secrets에 [firebase]가 있으면 Firestore, 없으면 로컬 파일.
+
+    매번 Secrets를 다시 확인하므로, 앱을 켠 뒤에 Secrets를 넣어도 바로 Firebase로 바뀝니다.
+    """
+    st.session_state.pop("_store_error", None)
     try:
         conf = st.secrets.get("firebase")
     except Exception:  # secrets.toml 자체가 없을 때
         conf = None
     if conf:
         try:
-            return FirestoreStore(dict(conf))
+            return _firestore(json.dumps(dict(conf), sort_keys=True))
         except Exception as e:  # 설정이 잘못되면 로컬로 대신 저장하고 알려 줍니다
             st.session_state["_store_error"] = f"Firebase 연결 실패: {e}"
     return LocalStore()
