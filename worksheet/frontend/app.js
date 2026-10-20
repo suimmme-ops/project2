@@ -54,12 +54,49 @@
   /* ---------------- 저장 ---------------- */
   const key = () => S.student ? `climate-ws:${S.student.number}:${S.student.name}` : null;
   let saveT;
-  function saveLocal() {
+  function saveLocal(fromServer) {
     clearTimeout(saveT);
     saveT = setTimeout(() => {
       try { localStorage.setItem(key(), JSON.stringify({ answers: S.answers, submitted: S.submitted, t: Date.now() })); } catch (e) { }
       updateProgress();
     }, 300);
+    if (!fromServer) scheduleSync();
+  }
+
+  /* 서버 자동 저장: 입력을 멈추고 2초 뒤 Firebase에 저장, 상태는 상단 단추에 표시 */
+  const sync = { dirty: false, busy: false, timer: null, last: null, failed: false };
+  function scheduleSync() {
+    if (!S.student) return;
+    sync.dirty = true; sync.failed = false;
+    showSync();
+    clearTimeout(sync.timer);
+    sync.timer = setTimeout(syncNow, 2000);
+  }
+  async function syncNow() {
+    clearTimeout(sync.timer);
+    if (!S.student || sync.busy) return;
+    if (!sync.dirty && sync.last) { showSync(); return; }
+    sync.busy = true; sync.dirty = false; showSync();
+    const r = await request({ action: "submit", chapter: S.chapter, student: S.student, answers: S.answers, submitted: S.submitted });
+    sync.busy = false;
+    if (r.ok) { sync.last = new Date(); sync.offline = !!r.offline; }
+    else { sync.failed = true; sync.dirty = true; sync.timer = setTimeout(syncNow, 8000); }
+    if (sync.dirty && !sync.failed) sync.timer = setTimeout(syncNow, 1000);
+    showSync();
+  }
+  window.syncNow = syncNow;
+  function showSync() {
+    const b = $("#sync");
+    if (!b) return;
+    const hm = d => `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+    let txt, cls;
+    if (sync.busy) { txt = "⏳ 저장 중…"; cls = "busy"; }
+    else if (sync.failed) { txt = "⚠️ 저장 실패 · 다시 저장"; cls = "err"; }
+    else if (sync.dirty) { txt = "✏️ 저장 대기 중"; cls = "wait"; }
+    else if (sync.last) { txt = sync.offline ? `💾 이 기기에 저장 ${hm(sync.last)}` : `✅ 자동 저장됨 ${hm(sync.last)}`; cls = "ok"; }
+    else { txt = "💾 저장하기"; cls = ""; }
+    b.textContent = txt; b.className = "sync " + cls;
+    b.title = "쓰는 내용은 2초마다 자동으로 저장돼요. 눌러서 바로 저장할 수도 있어요.";
   }
   function loadLocal() {
     try { return JSON.parse(localStorage.getItem(key()) || "null"); } catch (e) { return null; }
@@ -284,8 +321,9 @@
     if (btn) { btn.disabled = false; btn.textContent = "📮 선생님께 제출하기"; }
     if (silent) return;
     if (r.ok) {
+      clearTimeout(sync.timer); sync.dirty = false; sync.last = new Date(); showSync();
       S.submitted[ch] = new Date().toISOString();
-      saveLocal();
+      saveLocal(true);
       toast(r.offline ? "💾 미리보기 모드: 이 기기에만 저장했어요." : "📮 제출 완료! 선생님께 전달되었어요.", "ok");
       updateProgress();
     } else toast("😢 제출하지 못했어요. " + (r.error || ""), "err", 5000);
@@ -296,6 +334,7 @@
     return `<div class="brand"><span class="logo">🌏</span><span>기후 탐험 학습지</span></div>
       <nav class="chapnav" aria-label="챕터">${S.chapters.map(c =>
         `<button data-ch="${c.id}" style="--chip:${c.color}" aria-current="${c.id === S.chapter}"><span class="no">${c.no}</span>${esc(c.short)}<span class="done"></span></button>`).join("")}</nav>
+      <button class="sync" id="sync" type="button"></button>
       <div class="who">🙋 ${esc(S.student.number)}번 ${esc(S.student.name)} <button id="logout">나가기</button></div>`;
   }
   function openChapter(id) {
@@ -314,7 +353,7 @@
     $("#scroller").scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
     const nb = $(`.chapnav [data-ch="${id}"]`); if (nb) nb.scrollIntoView({ inline: "center", block: "nearest" });
     // 챕터를 옮길 때 자동 임시 저장 (교사 화면에 진행 상황 표시)
-    if (prev && prev !== id && S.student) submit(prev, null, true);
+    if (prev && prev !== id && S.student && sync.dirty) syncNow();
   }
   window.openChapter = openChapter;
   function submitBar(id) {
@@ -352,10 +391,15 @@
       const btn = $("#loginForm button"); btn.disabled = true; btn.textContent = "불러오는 중…";
       const r = await request({ action: "login", student: S.student }, 10000);
       const server = r && r.ok && r.record;
-      S.answers = Object.assign({}, server ? server.answers : {}, local ? local.answers : {});
-      S.submitted = Object.assign({}, server ? server.submitted : {}, local ? local.submitted : {});
+      // 서버와 이 기기 중 더 최근에 저장된 기록을 기준으로, 빠진 답은 서로 채워 넣기
+      const st = server && server.updated_at ? Date.parse(server.updated_at) : 0, lt = local ? local.t || 0 : 0;
+      const [older, newer] = lt > st ? [server, local] : [local, server];
+      S.answers = Object.assign({}, older ? older.answers : {}, newer ? newer.answers : {});
+      S.submitted = Object.assign({}, older ? older.submitted : {}, newer ? newer.submitted : {});
+      sync.last = server ? new Date(st || Date.now()) : null; sync.dirty = lt > st;
       try { localStorage.setItem("climate-ws:last", JSON.stringify(S.student)); } catch (e) { }
       start();
+      if (sync.dirty) scheduleSync();
       if (server && Object.keys(server.answers || {}).length) toast("📂 지난번에 쓴 학습지를 불러왔어요!");
     });
   }
@@ -364,7 +408,9 @@
     $("#topbar").classList.remove("hidden");
     $("#topbar").innerHTML = topbar();
     $$(".chapnav button").forEach(b => b.addEventListener("click", () => openChapter(b.dataset.ch)));
-    $("#logout").addEventListener("click", () => { if (confirm("학습지를 닫을까요? 쓴 내용은 이 기기에 저장되어 있어요.")) { S.student = null; S.answers = {}; S.submitted = {}; S.chapter = "ch1"; loginView(); } });
+    $("#sync").addEventListener("click", () => { sync.dirty = true; syncNow(); });
+    showSync();
+    $("#logout").addEventListener("click", () => { if (confirm("학습지를 닫을까요? 쓴 내용은 자동으로 저장돼요.")) { if (sync.dirty) syncNow(); S.student = null; S.answers = {}; S.submitted = {}; S.chapter = "ch1"; loginView(); } });
     const first = S.chapters.find(c => !S.submitted[c.id]) || S.chapters[0];
     S.chapter = null;
     openChapter(first.id);

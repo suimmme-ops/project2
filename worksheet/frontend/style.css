@@ -98,6 +98,13 @@ b, strong { font-weight: 800; }
 .chapnav button[aria-current="true"] { background: var(--chip); box-shadow: var(--sh-sm); transform: translate(-2px, -2px); }
 .chapnav button[aria-current="true"] .no { background: var(--card); }
 .chapnav button .done { font-size: 12px; }
+.sync {
+  border: var(--bw) solid var(--ink); border-radius: 999px; padding: 6px 14px; background: var(--card);
+  font-weight: 800; font-size: 13.5px; cursor: pointer; white-space: nowrap; transition: background .2s;
+}
+.sync.ok { background: var(--good-soft); }
+.sync.busy, .sync.wait { background: var(--warn-soft); }
+.sync.err { background: #ffe1e1; }
 .who {
   display: flex; align-items: center; gap: 8px; white-space: nowrap;
   border: var(--bw) solid var(--ink); border-radius: 999px; padding: 6px 14px; background: var(--card); font-weight: 800; font-size: 14px;
