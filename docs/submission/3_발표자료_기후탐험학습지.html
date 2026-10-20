@@ -1,0 +1,838 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>기후 탐험 학습지 키노트</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap">
+<style>
+/* 레이아웃: 1920×1080 무대를 화면에 맞춰 축소 · 어두운 무대 위 한 장에 한 메시지 · 키 컬러는 빛, 앱 화면은 밝은 네오브루탈 카드로 */
+:root {
+  --stage: #07080c;
+  --ink: #f4f2ec;
+  --mute: #8e909c;
+  --hair: #23252e;
+  --panel: #12141b;
+  --panel2: #191b24;
+  --coral: #ff8a65;
+  --sky: #5ec8f2;
+  --sun: #ffd23f;
+  --leaf: #7bd389;
+  --lilac: #b9a6f5;
+  --paper: #fff8ec;
+  --card: #ffffff;
+  --pink: #15151a;
+  --pmute: #5b5b66;
+  --pline: #e9e4d8;
+  --display: "Black Han Sans", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  color-scheme: dark;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--stage); color: var(--ink); font-family: var(--body);
+  overflow: hidden; -webkit-font-smoothing: antialiased; word-break: keep-all; user-select: none;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  box-sizing: border-box;
+}
+#deck { position: relative; width: 100%; height: 100%; }
+#stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform: translate(-50%, -50%) scale(var(--s, .5)); }
+.slide {
+  position: absolute; inset: 0; padding: 110px 140px 120px; box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: center; gap: 34px; overflow: hidden;
+  opacity: 0; visibility: hidden; transform: scale(1.012);
+  transition: opacity .7s var(--ease), transform .9s var(--ease), visibility 0s .7s;
+}
+.slide.active { opacity: 1; visibility: visible; transform: none; transition: opacity .7s var(--ease), transform .9s var(--ease), visibility 0s; }
+.glow { position: absolute; border-radius: 50%; filter: blur(130px); opacity: .28; pointer-events: none; }
+
+.eyebrow { font-size: 26px; font-weight: 700; letter-spacing: .14em; color: var(--mute); margin: 0; }
+.tagline { display: inline-flex; align-items: center; gap: 14px; font-size: 26px; font-weight: 900; letter-spacing: .06em; }
+.tagline i { font-style: normal; font-family: var(--display); font-weight: 400; font-size: 30px; padding: 6px 20px; border-radius: 99px; color: #101114; background: var(--c); letter-spacing: 0; }
+.h-xxl { font-family: var(--display); font-weight: 400; font-size: 210px; line-height: .98; margin: 0; }
+.h-xl { font-family: var(--display); font-weight: 400; font-size: 140px; line-height: 1.05; margin: 0; text-wrap: balance; }
+.h-l { font-weight: 900; font-size: 86px; line-height: 1.14; letter-spacing: -.035em; margin: 0; text-wrap: balance; }
+.h-m { font-weight: 900; font-size: 62px; line-height: 1.2; letter-spacing: -.03em; margin: 0; text-wrap: balance; }
+.lead { font-size: 36px; line-height: 1.55; color: var(--mute); margin: 0; max-width: 1350px; }
+.lead b { color: var(--ink); font-weight: 700; }
+.small { font-size: 23px; color: var(--mute); line-height: 1.5; margin: 0; }
+.dim { color: var(--mute); }
+.grad { background: linear-gradient(100deg, var(--coral), var(--sun) 30%, var(--leaf) 55%, var(--sky) 78%, var(--lilac)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.c-coral { color: var(--coral); } .c-sky { color: var(--sky); } .c-sun { color: var(--sun); } .c-leaf { color: var(--leaf); } .c-lilac { color: var(--lilac); }
+.row { display: flex; gap: 40px; } .col { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.grid2 { display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: center; }
+
+/* 등장 */
+.slide.active .a { animation: rise 1s var(--ease) both; animation-delay: calc(var(--d, 0) * 130ms + 120ms); }
+@keyframes rise { from { opacity: 0; transform: translateY(44px); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+.slide.active .a.zoom { animation-name: zoom; }
+@keyframes zoom { from { opacity: 0; transform: scale(.93); filter: blur(10px); } to { opacity: 1; transform: none; filter: none; } }
+
+/* ---------- 표지 ---------- */
+.dots { display: flex; gap: 18px; } .dots i { width: 22px; height: 22px; border-radius: 50%; display: block; }
+.meta { display: flex; gap: 48px; font-size: 26px; color: var(--mute); font-weight: 500; } .meta b { color: var(--ink); }
+
+/* ---------- 고민 1: 쌓이는 학습지 ---------- */
+.problem { display: grid; grid-template-columns: 1.25fr 1fr; gap: 70px; align-items: end; }
+.piles { position: relative; height: 400px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; align-items: end; padding-top: 60px; }
+.pile { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+.pile .stack { position: relative; width: 170px; height: 270px; }
+.sheet { position: absolute; left: 0; width: 160px; height: 180px; border-radius: 10px; background: #f3efe6; box-shadow: 0 10px 24px rgba(0,0,0,.55); border-top: 9px solid var(--c);
+  background-image: repeating-linear-gradient(#f3efe6 0 30px, #d9d3c6 30px 32px); background-position: 0 30px; }
+.slide.active .sheet { animation: drop .7s var(--ease) both; animation-delay: calc(var(--k) * 70ms + var(--p) * 380ms + 400ms); }
+@keyframes drop { from { opacity: 0; transform: translateY(-160px) rotate(var(--r)); } to { opacity: 1; transform: translateY(0) rotate(var(--r)); } }
+.pile .lab { margin-top: 26px; text-align: center; }
+.pile .lab b { display: block; font-size: 32px; font-weight: 900; }
+.pile .lab span { font-size: 24px; color: var(--mute); }
+.lost { position: absolute; right: -10px; top: -30px; width: 120px; height: 150px; border-radius: 8px; background: #f3efe6; border-top: 8px solid var(--leaf); opacity: 0; }
+.slide.active .lost { animation: fly 3.2s var(--ease) 2.2s both; }
+@keyframes fly { 0% { opacity: 0; transform: translate(0, 120px) rotate(0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(220px, -160px) rotate(38deg); } }
+.lost-note { position: absolute; right: -70px; top: 40px; font-size: 26px; font-weight: 900; color: var(--leaf); opacity: 0; }
+.slide.active .lost-note { animation: rise .6s var(--ease) 3s both; }
+.thread { position: absolute; left: 0; right: 0; top: 0; height: 40px; }
+.thread svg { width: 100%; height: 100%; overflow: visible; }
+.thread .seg { stroke-dasharray: 360; stroke-dashoffset: 360; }
+.slide.active .thread .seg { animation: draw .8s var(--ease) forwards; animation-delay: calc(var(--p) * 380ms + 1.6s); }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.thread .cut { opacity: 0; }
+.slide.active .thread .cut { animation: pop .5s var(--ease) forwards; animation-delay: calc(var(--p) * 380ms + 2.2s); }
+@keyframes pop { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: none; } }
+.pains { display: flex; flex-direction: column; gap: 26px; }
+.pain { display: grid; grid-template-columns: 70px 1fr; gap: 22px; align-items: start; padding-bottom: 24px; border-bottom: 2px solid var(--hair); }
+.pain .n { font-family: var(--display); font-size: 54px; line-height: 1; color: var(--c); }
+.pain .t { font-size: 36px; font-weight: 800; line-height: 1.35; letter-spacing: -.02em; }
+.pain .t small { display: block; font-size: 24px; font-weight: 500; color: var(--mute); margin-top: 6px; letter-spacing: 0; }
+.ask { font-family: var(--display); font-size: 58px; line-height: 1.2; margin: 0; }
+.slide.tight { gap: 26px; padding-top: 80px; padding-bottom: 100px; }
+
+/* ---------- 고민 2: 흩어진 데이터 ---------- */
+.scatter { position: relative; height: 440px; }
+.win { position: absolute; width: 330px; border-radius: 18px; background: var(--panel2); box-shadow: 0 30px 60px -20px rgba(0,0,0,.9); overflow: hidden; border: 1px solid #2c2f3a; }
+.win .bar { height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: #20232d; }
+.win .bar i { width: 11px; height: 11px; border-radius: 50%; background: #4b4f5c; display: block; }
+.win .bar span { margin-left: 8px; font-size: 17px; color: #a7aab6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.win svg { display: block; width: 100%; height: 130px; }
+.slide.active .win { animation: rise .8s var(--ease) both, bob var(--t) ease-in-out infinite alternate; animation-delay: calc(var(--d) * 150ms + 200ms), calc(var(--d) * 150ms + 1s); }
+@keyframes bob { from { translate: 0 -10px; } to { translate: 0 12px; } }
+.center-q { position: absolute; left: calc(50% - 280px); top: 80px; width: 560px; box-sizing: border-box; border-radius: 26px; background: var(--paper); color: var(--pink); padding: 30px 34px; box-shadow: 0 0 0 4px var(--pink), 10px 10px 0 4px var(--sun); }
+.center-q .k { font-size: 20px; font-weight: 900; letter-spacing: .1em; color: var(--pmute); }
+.center-q .q { font-size: 32px; font-weight: 900; line-height: 1.4; margin-top: 8px; }
+.center-q .line { margin-top: 18px; height: 54px; border-radius: 12px; border: 3px dashed #c9c2b3; display: flex; align-items: center; padding: 0 18px; font-size: 24px; color: #a39d90; font-weight: 700; }
+.wires { position: absolute; inset: 0; pointer-events: none; }
+.wires path { fill: none; stroke: #3a3e4b; stroke-width: 3; stroke-dasharray: 10 12; }
+.slide.active .wires path { animation: dash 1.6s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -44; } }
+.steps { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.steps span { font-size: 24px; font-weight: 800; padding: 10px 22px; border-radius: 99px; background: var(--panel); }
+.steps b { font-size: 30px; color: var(--mute); }
+
+/* ---------- 앱 화면 목업 (밝은 카드) ---------- */
+.device { border-radius: 28px; background: var(--paper); color: var(--pink); box-shadow: 0 60px 120px -30px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.08); overflow: hidden; }
+.device .top { display: flex; align-items: center; gap: 12px; padding: 20px 26px; border-bottom: 3px solid var(--pink); background: var(--paper); }
+.device .brand { font-weight: 900; font-size: 22px; display: flex; align-items: center; gap: 10px; margin-right: 10px; white-space: nowrap; }
+.device .brand i { width: 30px; height: 30px; border-radius: 50%; border: 3px solid var(--pink); background: var(--leaf); display: block; }
+.chipbtn { display: flex; align-items: center; gap: 8px; border: 3px solid var(--pink); border-radius: 99px; background: var(--card); padding: 5px 16px 5px 5px; font: inherit; font-weight: 900; font-size: 19px; color: var(--pink); cursor: pointer; transition: transform .2s var(--ease), box-shadow .2s, background .2s; white-space: nowrap; }
+.chipbtn .no { width: 32px; height: 32px; border-radius: 50%; border: 2.5px solid var(--pink); display: grid; place-items: center; background: var(--c); font-size: 16px; }
+.chipbtn[aria-pressed="true"] { background: var(--c); transform: translate(-3px, -3px); box-shadow: 4px 4px 0 var(--pink); }
+.chipbtn[aria-pressed="true"] .no { background: var(--card); }
+.saved { margin-left: auto; font-size: 17px; font-weight: 900; padding: 6px 14px; border-radius: 99px; border: 3px solid var(--pink); background: #dcf5e3; white-space: nowrap; }
+.device .body { padding: 30px 34px 36px; display: grid; gap: 18px; }
+.qa { border: 3px solid var(--pink); border-radius: 18px; background: var(--card); padding: 18px 22px; box-shadow: 4px 4px 0 var(--pink); }
+.qa .q { font-size: 21px; font-weight: 900; display: flex; gap: 12px; }
+.qa .q i { font-style: normal; flex: none; width: 32px; height: 32px; border-radius: 9px 9px 9px 2px; border: 2.5px solid var(--pink); display: grid; place-items: center; background: var(--c); font-family: var(--display); font-size: 16px; }
+.qa .ans { margin-top: 12px; font-size: 21px; line-height: 1.6; padding: 10px 14px; border-radius: 12px; background: #fffdf8; border: 2px solid #d8d2c4; min-height: 64px; }
+.qa .ans .caret { display: inline-block; width: 3px; height: 1.1em; background: var(--pink); vertical-align: -3px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.chhead { display: flex; align-items: center; gap: 16px; padding: 16px 22px; border-radius: 18px; border: 3px solid var(--pink); background: var(--c); }
+.chhead b { font-family: var(--display); font-weight: 400; font-size: 44px; line-height: 1; }
+.chhead span { font-size: 26px; font-weight: 900; }
+.flowline { height: 10px; border-radius: 10px; background: linear-gradient(90deg, var(--coral), var(--sky), var(--sun), var(--leaf), var(--lilac)); width: 0; transition: width 1.2s var(--ease); }
+.slide.active .flowline { width: var(--w, 20%); }
+.benefits { display: flex; flex-direction: column; gap: 30px; }
+.benefit { display: grid; grid-template-columns: 76px 1fr; gap: 24px; align-items: start; }
+.benefit .ic { width: 76px; height: 76px; border-radius: 22px; display: grid; place-items: center; background: var(--panel); font-size: 36px; }
+.benefit .t { font-size: 38px; font-weight: 900; letter-spacing: -.02em; line-height: 1.3; }
+.benefit .t small { display: block; font-size: 25px; font-weight: 500; color: var(--mute); margin-top: 6px; letter-spacing: 0; line-height: 1.45; }
+.benefit .x { text-decoration: line-through; text-decoration-color: var(--coral); text-decoration-thickness: 4px; color: var(--mute); }
+
+/* 대시보드 목업 */
+.dash { padding: 26px 30px 30px; display: grid; gap: 18px; }
+.dtabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.dtabs span { font-size: 17px; font-weight: 800; padding: 6px 14px; border-radius: 99px; border: 2.5px solid var(--pink); background: var(--card); }
+.dtabs span.on { background: var(--sun); }
+.ptable { border: 3px solid var(--pink); border-radius: 16px; overflow: hidden; background: var(--card); }
+.prow { display: grid; grid-template-columns: 150px repeat(5, 1fr); gap: 10px; align-items: center; padding: 10px 16px; border-bottom: 1.5px solid var(--pline); font-size: 18px; font-weight: 800; }
+.prow:last-child { border-bottom: 0; }
+.prow.h { background: #fdf0d9; font-size: 16px; color: var(--pmute); }
+.pbar { height: 14px; border-radius: 99px; background: #f1ece1; overflow: hidden; }
+.pbar i { display: block; height: 100%; width: 0; background: var(--c); border-radius: 99px; transition: width 1.2s var(--ease); }
+.slide.active .pbar i { width: var(--w); transition-delay: calc(var(--k) * 80ms + .5s); }
+.trail { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; position: relative; }
+.trail .tc { border: 2.5px solid var(--pink); border-radius: 14px; padding: 12px 14px; font-size: 16.5px; line-height: 1.5; background: var(--card); position: relative; }
+.trail .tc b { display: block; font-size: 15px; font-weight: 900; padding: 2px 10px; border-radius: 99px; background: var(--c); border: 2px solid var(--pink); width: max-content; margin-bottom: 6px; }
+.trail .tc::after { content: "→"; position: absolute; right: -14px; top: 50%; transform: translate(50%, -50%); font-weight: 900; font-size: 20px; }
+.trail .tc:last-child::after { content: none; }
+
+/* ---------- 해결 2: 라이브 차트 카드 ---------- */
+.charts2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.ccard { border-radius: 26px; background: var(--card); color: var(--pink); padding: 28px 30px 26px; box-shadow: 0 0 0 4px var(--pink), 8px 8px 0 4px var(--c); display: flex; flex-direction: column; gap: 14px; }
+.ccard .tt { font-size: 26px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.ccard .tt small { font-size: 16px; font-weight: 800; padding: 4px 12px; border-radius: 9px; border: 2.5px solid var(--pink); background: #dbf3fd; white-space: nowrap; }
+.ccard svg { display: block; width: 100%; height: auto; }
+.tiles { display: flex; gap: 12px; }
+.tile { flex: 1; border: 3px solid var(--pink); border-radius: 14px; padding: 10px 16px; background: var(--card); }
+.tile .k { font-size: 16px; font-weight: 800; color: var(--pmute); display: flex; align-items: center; gap: 8px; }
+.tile .k i { width: 14px; height: 14px; border-radius: 4px; display: block; border: 2px solid var(--pink); }
+.tile .v { font-family: var(--display); font-size: 40px; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.tile .v small { font-family: var(--body); font-size: 17px; font-weight: 800; margin-left: 4px; }
+.ctrl { display: grid; gap: 6px; background: #fdf0d9; border: 3px solid var(--pink); border-radius: 16px; padding: 12px 18px; }
+.ctrl .cl { display: flex; justify-content: space-between; align-items: center; font-weight: 900; font-size: 19px; }
+.ctrl output { font-family: var(--display); font-size: 24px; background: var(--card); border: 2.5px solid var(--pink); border-radius: 10px; padding: 0 12px; }
+
+/* 슬라이더 (밝은 카드용 · 어두운 패널용) */
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 40px; background: transparent; cursor: pointer; margin: 0; --pct: 50%; --fill: var(--sky); --rail: #fff; --edge: var(--pink); }
+input[type=range]::-webkit-slider-runnable-track { height: 16px; border-radius: 99px; border: 3px solid var(--edge); background: linear-gradient(90deg, var(--fill) var(--pct), var(--rail) var(--pct)); }
+input[type=range]::-moz-range-track { height: 16px; border-radius: 99px; border: 3px solid var(--edge); background: var(--rail); }
+input[type=range]::-moz-range-progress { height: 16px; border-radius: 99px; background: var(--fill); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 36px; height: 36px; margin-top: -13px; border-radius: 50%; background: #fff; border: 4px solid var(--edge); box-shadow: 3px 3px 0 var(--edge); }
+input[type=range]::-moz-range-thumb { width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 4px solid var(--edge); }
+input[type=range]:focus-visible { outline: 3px solid var(--sky); outline-offset: 6px; border-radius: 99px; }
+.dark input[type=range] { --rail: #2a2d38; --edge: #f4f2ec; }
+
+/* ---------- 프로젝트 소개 ---------- */
+.std { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.stdc { border-radius: 28px; background: var(--panel); padding: 32px 36px; display: flex; flex-direction: column; gap: 14px; }
+.stdc .code { font-family: var(--display); font-size: 34px; color: #101114; background: var(--c); width: max-content; padding: 4px 18px; border-radius: 12px; }
+.stdc .tx { font-size: 30px; font-weight: 700; line-height: 1.45; }
+.chips { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.chip { font-size: 27px; font-weight: 800; padding: 12px 26px; border-radius: 99px; background: var(--panel); }
+.chip i { font-style: normal; color: var(--c); margin-right: 10px; }
+.evals { display: grid; gap: 14px; }
+.ev { display: grid; grid-template-columns: 190px 1fr; gap: 24px; align-items: center; border-radius: 20px; background: var(--panel); padding: 18px 28px; }
+.ev b { font-size: 26px; font-weight: 900; color: var(--c); }
+.ev span { font-size: 25px; line-height: 1.45; color: #d7d5cf; }
+
+/* ---------- 프로젝트 흐름 ---------- */
+.flowgrid { display: grid; grid-template-columns: 560px 1fr; gap: 50px; align-items: stretch; }
+.chlist { display: flex; flex-direction: column; gap: 16px; }
+.chl { display: grid; grid-template-columns: 64px 1fr; gap: 18px; align-items: center; text-align: left; border: 0; border-radius: 22px; background: var(--panel); color: var(--ink); padding: 18px 22px; font: inherit; cursor: pointer; transition: transform .25s var(--ease), background .25s; }
+.chl .n { width: 64px; height: 64px; border-radius: 18px; display: grid; place-items: center; font-family: var(--display); font-size: 34px; color: #101114; background: var(--c); }
+.chl .t { font-size: 30px; font-weight: 900; letter-spacing: -.02em; }
+.chl .t small { display: block; font-size: 21px; font-weight: 500; color: var(--mute); margin-top: 2px; letter-spacing: 0; }
+.chl[aria-pressed="true"] { background: var(--panel2); transform: translateX(14px); box-shadow: inset 6px 0 0 var(--c); }
+.chl:hover { background: var(--panel2); }
+.chl:focus-visible { outline: 3px solid var(--c); outline-offset: 4px; }
+.viewer { border-radius: 30px; background: var(--panel); padding: 36px 40px; display: flex; flex-direction: column; gap: 18px; position: relative; min-height: 700px; box-sizing: border-box; }
+.viewer .vt { font-size: 44px; font-weight: 900; letter-spacing: -.03em; }
+.viewer .vd { font-size: 26px; color: var(--mute); line-height: 1.5; }
+.viewer .vs { font-size: 19px; color: var(--mute); margin-top: auto; }
+.viewer svg { display: block; width: 100%; height: auto; }
+.vrow { display: flex; gap: 14px; }
+.vtile { flex: 1; border-radius: 18px; background: var(--panel2); padding: 14px 20px; }
+.vtile .k { font-size: 19px; font-weight: 700; color: var(--mute); }
+.vtile .v { font-family: var(--display); font-size: 48px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.vctrl { display: flex; align-items: center; gap: 24px; }
+.vctrl label { font-size: 22px; font-weight: 800; white-space: nowrap; }
+.vctrl output { font-family: var(--display); font-size: 34px; min-width: 130px; text-align: right; }
+.pane { display: none; flex-direction: column; gap: 18px; animation: rise .6s var(--ease) both; }
+.pane.on { display: flex; }
+.mbar { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: center; }
+.mbar .l { font-size: 25px; font-weight: 700; line-height: 1.3; }
+.mbar .tr { height: 48px; border-radius: 14px; background: var(--panel2); overflow: hidden; }
+.mbar .tr i { display: flex; align-items: center; justify-content: flex-end; padding-right: 16px; box-sizing: border-box; height: 100%; font-style: normal; font-weight: 900; font-size: 24px; color: #101114; border-radius: 14px; transition: width .7s var(--ease), background .4s; white-space: nowrap; }
+.prompt-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.pc { border-radius: 20px; background: var(--panel2); padding: 22px 24px; font-size: 25px; line-height: 1.5; }
+.pc b { display: block; font-size: 20px; color: var(--c); margin-bottom: 6px; }
+
+/* ---------- 구축 방법 ---------- */
+.arch { display: grid; grid-template-columns: 1fr 120px 1fr 120px 1fr; align-items: center; }
+.node { border-radius: 32px; background: var(--panel); padding: 38px 36px; display: flex; flex-direction: column; gap: 12px; min-height: 270px; box-sizing: border-box; border: 2px solid var(--c); box-shadow: 0 0 80px -24px var(--c); }
+.node .ic { font-size: 60px; line-height: 1; }
+.node .t { font-size: 42px; font-weight: 900; letter-spacing: -.02em; }
+.node .s { font-size: 25px; color: var(--mute); line-height: 1.5; }
+.link { height: 6px; position: relative; overflow: hidden; border-radius: 6px; background: var(--hair); margin: 0 14px; }
+.link::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, var(--c) 0 24px, transparent 24px 42px); }
+.slide.active .link::after { animation: flow 1.1s linear infinite; }
+@keyframes flow { from { transform: translateX(-42px); } to { transform: none; } }
+.build { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.bstep { border-top: 4px solid var(--c); padding-top: 18px; display: flex; flex-direction: column; gap: 6px; }
+.bstep b { font-family: var(--display); font-weight: 400; font-size: 30px; color: var(--c); }
+.bstep span { font-size: 27px; font-weight: 800; }
+.bstep small { font-size: 21px; color: var(--mute); line-height: 1.45; }
+
+/* ---------- 목표 ---------- */
+.goals { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.goal { border-radius: 40px; background: var(--panel); padding: 54px 56px; display: flex; flex-direction: column; gap: 22px; position: relative; overflow: hidden; min-height: 520px; box-sizing: border-box; }
+.goal .gl { position: absolute; width: 520px; height: 520px; border-radius: 50%; right: -200px; top: -220px; background: var(--c); filter: blur(110px); opacity: .35; }
+.goal .k { font-size: 24px; font-weight: 900; letter-spacing: .12em; color: var(--c); }
+.goal .w { font-family: var(--display); font-size: 108px; line-height: 1.08; }
+.goal .s { font-size: 32px; line-height: 1.5; color: #d7d5cf; }
+.goal ul { margin: auto 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.goal li { font-size: 27px; font-weight: 700; display: flex; gap: 14px; align-items: baseline; }
+.goal li::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--c); flex: none; transform: translateY(-3px); }
+
+/* ---------- QR ---------- */
+.qr { width: 360px; height: 360px; padding: 34px; border-radius: 40px; background: var(--ink); box-sizing: border-box; flex: none; }
+.qr svg { display: block; width: 100%; height: 100%; }
+.url { font-family: var(--display); font-size: 76px; line-height: 1.1; white-space: nowrap; text-decoration: none; }
+
+/* ---------- 하단 조작 막대 ---------- */
+#hud { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; display: flex; align-items: center; gap: 18px; padding: 14px max(26px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(26px, env(safe-area-inset-left, 0px)); font-size: 14px; color: var(--mute); transition: opacity .4s; background: linear-gradient(transparent, rgba(7,8,12,.85) 40%); }
+#hud .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; letter-spacing: .04em; white-space: nowrap; }
+#hud .brand i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+#hud .pager { flex: 1; display: flex; align-items: center; gap: 14px; max-width: 640px; margin-left: auto; }
+#page { --fill: var(--ink); --rail: #2a2d38; --edge: transparent; height: 26px; }
+#page::-webkit-slider-runnable-track { height: 6px; border: 0; }
+#page::-moz-range-track { height: 6px; border: 0; }
+#page::-moz-range-progress { height: 6px; }
+#page::-webkit-slider-thumb { width: 18px; height: 18px; margin-top: -6px; border: 0; box-shadow: none; background: var(--ink); }
+#page::-moz-range-thumb { width: 16px; height: 16px; border: 0; background: var(--ink); }
+#count { font-variant-numeric: tabular-nums; min-width: 64px; text-align: right; color: var(--ink); font-weight: 700; }
+#hud button { background: transparent; border: 1px solid var(--hair); color: var(--mute); border-radius: 99px; padding: 6px 14px; font: inherit; cursor: pointer; white-space: nowrap; }
+#hud button:hover, #hud button:focus-visible { color: var(--ink); border-color: var(--mute); outline: none; }
+#bar { position: fixed; left: 0; top: 0; height: 3px; width: 0; z-index: 6; background: linear-gradient(90deg, var(--coral), var(--sun), var(--leaf), var(--sky), var(--lilac)); transition: width .6s var(--ease); }
+body.idle #hud { opacity: 0; } body.idle { cursor: none; }
+#jump { position: fixed; left: 50%; top: 40%; transform: translate(-50%, -50%); z-index: 8; font-family: var(--display); font-size: 120px; color: var(--ink); background: rgba(18,20,27,.9); border-radius: 30px; padding: 10px 50px; }
+
+/* 목차 */
+#overview { position: fixed; inset: 0; z-index: 7; background: rgba(7,8,12,.94); backdrop-filter: blur(8px); display: flex; flex-direction: column; gap: 26px; padding: calc(40px + env(safe-area-inset-top, 0px)) max(40px, env(safe-area-inset-right, 0px)) 40px max(40px, env(safe-area-inset-left, 0px)); overflow: auto; }
+#overview h3 { margin: 0; font-size: 22px; letter-spacing: .14em; color: var(--mute); font-weight: 700; }
+#ovgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+#ovgrid button { text-align: left; border: 0; border-radius: 18px; background: var(--panel); color: var(--ink); padding: 18px 20px 20px; font: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 8px; box-shadow: inset 0 4px 0 var(--c); transition: transform .2s var(--ease), background .2s; }
+#ovgrid button:hover, #ovgrid button:focus-visible { background: var(--panel2); transform: translateY(-3px); outline: none; }
+#ovgrid button.cur { box-shadow: inset 0 4px 0 var(--c), 0 0 0 2px var(--ink); }
+#ovgrid b { font-family: var(--display); font-weight: 400; font-size: 34px; color: var(--c); }
+#ovgrid span { font-size: 17px; font-weight: 700; line-height: 1.4; }
+
+@media (prefers-reduced-motion: reduce) {
+  .slide, .slide.active { transition: opacity .2s; transform: none; }
+  .slide.active .a, .slide.active .sheet, .slide.active .win, .slide.active .lost, .slide.active .lost-note, .slide.active .thread .cut, .slide.active .link::after, .slide.active .wires path { animation: none; }
+  .slide.active .thread .seg { animation: none; stroke-dashoffset: 0; }
+  .slide.active .thread .cut, .lost-note { opacity: 1; }
+}
+</style>
+
+<div id="deck">
+<div id="stage">
+
+<!-- 0. 표지 -->
+<section class="slide" data-title="표지" data-c="var(--sky)">
+  <div class="glow" style="width:900px;height:900px;left:-200px;top:-300px;background:var(--sky)"></div>
+  <div class="glow" style="width:800px;height:800px;right:-200px;bottom:-350px;background:var(--coral)"></div>
+  <div class="dots a" style="--d:0"><i style="background:var(--coral)"></i><i style="background:var(--sky)"></i><i style="background:var(--sun)"></i><i style="background:var(--leaf)"></i><i style="background:var(--lilac)"></i></div>
+  <p class="eyebrow a" style="--d:1">데이터 기반 융합 수업 · STREAMLIT 웹앱</p>
+  <h1 class="h-xxl a" style="--d:2"><span class="grad">기후 탐험</span><br>학습지</h1>
+  <p class="lead a" style="--d:3">데이터로 읽는 기후변화, <b>2050년을 예측하다</b></p>
+  <div class="meta a" style="--d:5"><span><b>초등 6학년</b> · 사회·과학 융합 프로젝트</span><span>숙명여자대학교 2026-2 · AI융합교육 동향과 이슈</span></div>
+</section>
+
+<!-- 1. 고민 1 -->
+<section class="slide tight" data-title="고민 1 · 끊어지는 생각" data-c="var(--coral)">
+  <span class="tagline a" style="--d:0;--c:var(--coral)"><i>고민 1</i>프로젝트 수업의 학습지</span>
+  <h2 class="h-m a" style="--d:1">차시가 지날수록 학습지는 쌓이고,<br><span class="c-coral">생각은 끊어집니다.</span></h2>
+  <div class="problem">
+    <div class="piles" id="piles">
+      <div class="thread"><svg viewBox="0 0 1000 40" preserveAspectRatio="none" id="threadSvg"></svg></div>
+    </div>
+    <div class="pains">
+      <div class="pain a" style="--d:5;--c:var(--coral)"><span class="n">↑</span><span class="t">늘어나는 학습지와 문항<small>4차시 동안 문항 7개 → 47개</small></span></div>
+      <div class="pain a" style="--d:6;--c:var(--sun)"><span class="n">?</span><span class="t">"지난 시간 학습지 어디 있지?"<small>찾고, 다시 꺼내고, 잃어버리고</small></span></div>
+      <div class="pain a" style="--d:7;--c:var(--sky)"><span class="n">⋯</span><span class="t">보이지 않는 사고의 흐름<small>학생별로 생각이 어떻게 이어졌는지 살피기 어려움</small></span></div>
+    </div>
+  </div>
+  <p class="ask a" style="--d:9"><span class="grad">한 화면에서 모든 차시의 생각을 볼 수는 없을까?</span></p>
+</section>
+
+<!-- 2. 고민 2 -->
+<section class="slide tight" data-title="고민 2 · 흩어진 데이터" data-c="var(--sun)">
+  <span class="tagline a" style="--d:0;--c:var(--sun)"><i>고민 2</i>프로젝트 수업의 데이터</span>
+  <h2 class="h-m a" style="--d:1">데이터는 많은데,<br><span class="c-sun">한곳에 모여 있지 않습니다.</span></h2>
+  <div class="scatter" id="scatter">
+    <svg class="wires" viewBox="0 0 1640 440" preserveAspectRatio="none" id="wires"></svg>
+    <div class="center-q a zoom" style="--d:2"><div class="k">학습지 STEP 3</div><div class="q">2024년, 대한민국의 1인당 CO₂ 배출량은 약 몇 톤일까요?</div><div class="line">어디서 찾아야 하지…?</div></div>
+  </div>
+  <div class="steps a" style="--d:9"><span>새 탭 열기</span><b>→</b><span>사이트 검색</span><b>→</b><span>그래프 찾기</span><b>→</b><span>다시 학습지로</span><b class="c-sun">↺ 반복</b></div>
+  <p class="ask a" style="--d:10" ><span class="grad">질문 바로 옆에, 필요한 데이터가 있다면?</span></p>
+</section>
+
+<!-- 3. 해결 1 · 학생 -->
+<section class="slide" data-title="해결 1 · 한 화면, 모든 차시" data-c="var(--sky)">
+  <span class="tagline a" style="--d:0;--c:var(--sky)"><i>해결 1</i>학생 화면</span>
+  <div class="grid2" style="grid-template-columns:1.2fr 1fr">
+    <div class="device a zoom" style="--d:1">
+      <div class="top"><span class="brand"><i></i></span><span id="mockChips" style="display:flex;gap:8px;flex-wrap:wrap"></span></div>
+      <div class="body" id="mockBody"></div>
+    </div>
+    <div class="col" style="gap:34px">
+      <h2 class="h-m a" style="--d:2">한 화면에서,<br><span class="c-sky">모든 차시</span>를.</h2>
+      <div class="flowline a" style="--d:3;--w:100%"></div>
+      <div class="benefits">
+        <div class="benefit a" style="--d:4"><span class="ic">📂</span><span class="t"><span class="x">이전 학습지 찾기</span><small>로그인하면 1~4차시가 한곳에. 잃어버릴 학습지가 없습니다.</small></span></div>
+        <div class="benefit a" style="--d:5"><span class="ic">🔗</span><span class="t">차시 버튼 하나로 이어지는 생각<small>지난 차시에 쓴 답을 다시 보며 다음 질문으로.</small></span></div>
+        <div class="benefit a" style="--d:6"><span class="ic">☁️</span><span class="t">쓰는 순간 자동 저장<small>2초마다 저장 · 다른 기기에서도 이어 쓰기.</small></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. 해결 1 · 교사 -->
+<section class="slide" data-title="해결 1 · 교사 대시보드" data-c="var(--leaf)">
+  <span class="tagline a" style="--d:0;--c:var(--leaf)"><i>해결 1</i>교사 화면</span>
+  <div class="grid2" style="grid-template-columns:1fr 1.25fr">
+    <div class="col" style="gap:34px">
+      <h2 class="h-m a" style="--d:1">학생의 생각을,<br><span class="c-leaf">흐름으로</span> 봅니다.</h2>
+      <div class="benefits">
+        <div class="benefit a" style="--d:3"><span class="ic">📊</span><span class="t">진행 현황 한눈에<small>누가 어디까지 했는지 차시별 작성률로.</small></span></div>
+        <div class="benefit a" style="--d:4"><span class="ic">🗂️</span><span class="t">한 문항, 반 전체의 답<small>수업 중 바로 띄워 함께 나누고 피드백.</small></span></div>
+        <div class="benefit a" style="--d:5"><span class="ic">🧭</span><span class="t">학생 한 명의 사고 흐름<small>1차시의 질문이 4차시의 예측으로 이어지는 과정.</small></span></div>
+      </div>
+    </div>
+    <div class="device a zoom" style="--d:2">
+      <div class="top"><span class="brand"><i style="background:var(--sky)"></i>교사 대시보드</span><span class="saved" style="background:#fff4c7">예시 화면</span></div>
+      <div class="dash">
+        <div class="dtabs"><span class="on">진행 현황</span><span>문항별 모아보기</span><span>2050 예측 글</span><span>학생별 보기</span><span>응답 분석</span></div>
+        <div class="ptable" id="ptable"></div>
+        <div style="font-weight:900;font-size:19px;margin-top:4px">🧭 학생별 보기 · 사고의 흐름</div>
+        <div class="trail">
+          <div class="tc" style="--c:var(--coral)"><b>1차시</b>기온이 오르면 물이 더 증발해 비가 한꺼번에 내린다.</div>
+          <div class="tc" style="--c:var(--sky)"><b>2차시</b>1980년경부터 급격히 올랐다. 공장과 자동차가 늘었다.</div>
+          <div class="tc" style="--c:var(--sun)"><b>3차시</b>1.5℃를 넘으면 폭염·폭우가 훨씬 심해진다.</div>
+          <div class="tc" style="--c:var(--leaf)"><b>4차시</b>낮은 배출이면 2050년에도 운동장에서 놀 수 있다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. 해결 2 · 데이터 -->
+<section class="slide" data-title="해결 2 · 질문 옆의 데이터" data-c="var(--sun)">
+  <span class="tagline a" style="--d:0;--c:var(--sun)"><i>해결 2</i>차시마다 필요한 데이터를 그 자리에</span>
+  <h2 class="h-m a" style="--d:1">접속도, 검색도 없이.<br><span class="c-sun">슬라이더를 움직이면 답이 보입니다.</span></h2>
+  <div class="charts2">
+    <div class="ccard a" style="--d:2;--c:var(--coral)">
+      <div class="tt">🌡️ 세계 평균 기온의 변화 <small>HadCRUT5 · 1850–2025</small></div>
+      <div class="tiles"><div class="tile"><div class="k" id="t1k">1940년</div><div class="v" id="t1v">+0.00<small>℃</small></div></div><div class="tile"><div class="k">10년 평균</div><div class="v" id="t1m">+0.00<small>℃</small></div></div></div>
+      <svg id="c1" viewBox="0 0 760 300"></svg>
+      <div class="ctrl"><div class="cl"><span>📍 기온이 급격하게 오르기 시작한 때는?</span><output id="o1">1940년</output></div><input type="range" id="r1" min="1860" max="2025" value="1940" style="--fill:var(--coral)" aria-label="기온 그래프 연도"></div>
+    </div>
+    <div class="ccard a" style="--d:3;--c:var(--sky)">
+      <div class="tt">👤 1인당 CO₂ 배출량 <small>Global Carbon Budget · OWID</small></div>
+      <div class="tiles"><div class="tile"><div class="k"><i style="background:#2a78d6"></i>대한민국</div><div class="v" id="t2a">0<small>톤</small></div></div><div class="tile"><div class="k"><i style="background:#eb6834"></i>영국</div><div class="v" id="t2b">0<small>톤</small></div></div></div>
+      <svg id="c2" viewBox="0 0 760 300"></svg>
+      <div class="ctrl"><div class="cl"><span>📍 기준 연도</span><output id="o2">2024년</output></div><input type="range" id="r2" min="1950" max="2024" value="2024" style="--fill:var(--sky)" aria-label="1인당 배출량 그래프 연도"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. 프로젝트 소개 -->
+<section class="slide" data-title="프로젝트 소개" data-c="var(--lilac)">
+  <div class="glow" style="width:900px;height:600px;right:-200px;top:-200px;background:var(--lilac);opacity:.2"></div>
+  <p class="eyebrow a" style="--d:0">PROJECT</p>
+  <h2 class="h-l a" style="--d:1"><span class="grad">데이터로 읽는 기후변화,</span><br>2050년을 예측하다</h2>
+  <div class="std">
+    <div class="stdc a" style="--d:2;--c:var(--sun)"><span class="code">6사12-02</span><span class="tx">지구촌을 위협하는 다양한 문제들을 파악하고, 지속가능한 미래를 위한 해결 방안을 탐색한다.</span></div>
+    <div class="stdc a" style="--d:3;--c:var(--leaf)"><span class="code">6과16-01</span><span class="tx">미래 사회에 일어날 수 있는 문제를 조사하고, 문제를 해결하는 데 과학이 기여할 수 있는 방법을 토의할 수 있다.</span></div>
+  </div>
+  <div class="row" style="gap:50px;align-items:flex-start">
+    <div class="col a" style="--d:4;gap:14px;flex:none"><p class="eyebrow" style="font-size:21px">교과 핵심역량</p>
+      <div class="chips"><span class="chip" style="--c:var(--sky)"><i>●</i>문제 해결력 및 의사 결정력</span></div><div class="chips"><span class="chip" style="--c:var(--coral)"><i>●</i>정보 활용 능력</span></div></div>
+    <div class="col a" style="--d:5;gap:14px;flex:1"><p class="eyebrow" style="font-size:21px">과정중심평가</p>
+      <div class="evals">
+        <div class="ev" style="--c:var(--sky)"><b>지식·이해</b><span>산업화 이후 탄소 배출 증가와 기후위기의 관계를 데이터와 사례를 바탕으로 설명할 수 있는가?</span></div>
+        <div class="ev" style="--c:var(--sun)"><b>과정·기능</b><span>탄소 저감 실천 데이터를 수집·분석하고, 기후 행동 캠페인 등 디지털 산출물을 협력적으로 제작할 수 있는가?</span></div>
+        <div class="ev" style="--c:var(--leaf)"><b>가치·태도</b><span>기후 문제를 자신의 삶과 공동체 문제로 연결하여 이해하고, 지속 가능한 미래를 위한 실천 의지를 보이는가?</span></div>
+      </div></div>
+  </div>
+</section>
+
+<!-- 7. 프로젝트 흐름 -->
+<section class="slide" data-title="프로젝트 흐름" data-c="var(--sky)">
+  <p class="eyebrow a" style="--d:0">FLOW · 차시를 눌러 데이터를 직접 움직여 보세요</p>
+  <div class="flowgrid">
+    <div class="chlist a" style="--d:1" id="chlist">
+      <button class="chl" data-p="0" style="--c:var(--coral)" aria-pressed="true"><span class="n">1</span><span class="t">기후변화, 얼마나 심각할까?<small>기후 재난의 원인 · 사라지는 것들</small></span></button>
+      <button class="chl" data-p="1" style="--c:var(--sky)" aria-pressed="false"><span class="n">2</span><span class="t">데이터로 기후변화 분석하기<small>기온 · CO₂ · 1인당 배출 · 나라별 순위</small></span></button>
+      <button class="chl" data-p="2" style="--c:var(--sun)" aria-pressed="false"><span class="n">3</span><span class="t">1.5℃, 생존의 마지노선<small>평균 기온의 의미 · 1.5℃ vs 2℃ · 기후 시계</small></span></button>
+      <button class="chl" data-p="3" style="--c:var(--leaf)" aria-pressed="false"><span class="n">4</span><span class="t">2050년, 미래 예측하기<small>IPCC 시나리오 · 미래 사회 예측 글쓰기</small></span></button>
+      <button class="chl" data-p="4" style="--c:var(--lilac)" aria-pressed="false"><span class="n">★</span><span class="t">마무리 성찰<small>알게 된 점 · 느낀 점 · 탐구 기록 모아보기</small></span></button>
+    </div>
+    <div class="viewer dark a zoom" style="--d:2">
+      <div class="pane on" data-p="0">
+        <div class="vt">공기가 따뜻해지면, 품을 수 있는 수증기가 늘어나요</div>
+        <div class="vd">왜 홍수·폭염·산불이 심해질까? 원리를 슬라이더로 확인합니다.</div>
+        <svg id="v1" viewBox="0 0 980 300"></svg>
+        <div class="vctrl"><label for="vr1">🌡️ 기온 상승</label><input type="range" id="vr1" min="0" max="4" step="0.1" value="1.5" style="--fill:var(--coral)"><output id="vo1">+1.5℃</output></div>
+        <div class="vs">클라우지우스-클라페이롱 관계(약 7%/℃) · IPCC AR6 WGI 8장</div>
+      </div>
+      <div class="pane" data-p="1">
+        <div class="vt">사람들이 내뿜은 CO₂는 얼마나 늘었을까?</div>
+        <div class="vd">세계 배출량을 연도별로 읽으며 기온 그래프와 비교합니다.</div>
+        <div class="vrow"><div class="vtile"><div class="k" id="v2k">1950년</div><div class="v c-sky" id="v2v">0억 톤</div></div><div class="vtile"><div class="k">1850년의</div><div class="v" id="v2x">0배</div></div></div>
+        <svg id="v2" viewBox="0 0 980 260"></svg>
+        <div class="vctrl"><label for="vr2">📍 연도</label><input type="range" id="vr2" min="1850" max="2024" value="1950" style="--fill:var(--sky)"><output id="vo2">1950년</output></div>
+        <div class="vs">Global Carbon Budget(2025) · Our World in Data</div>
+      </div>
+      <div class="pane" data-p="2">
+        <div class="vt">0.5℃가 만드는 차이</div>
+        <div class="vd">슬라이더로 1.5℃와 2℃의 세상을 오가며 비교합니다.</div>
+        <div class="vctrl"><label for="vr3">🌡️ 지구 온난화</label><input type="range" id="vr3" min="1.5" max="2" step="0.5" value="1.5" style="--fill:var(--sun)"><output id="vo3">1.5℃</output></div>
+        <div class="col" style="gap:20px" id="v3"></div>
+        <div class="vs">IPCC 지구온난화 1.5℃ 특별보고서(2018)</div>
+      </div>
+      <div class="pane" data-p="3">
+        <div class="vt">같은 해, 다른 두 세상</div>
+        <div class="vd">온실가스 배출 시나리오에 따라 미래 기온이 어떻게 달라지는지 예측합니다.</div>
+        <div class="vrow"><div class="vtile"><div class="k">🌱 매우 낮은 배출</div><div class="v c-leaf" id="v4a">+1.6℃</div></div><div class="vtile"><div class="k">🔥 매우 높은 배출</div><div class="v c-coral" id="v4b">+2.4℃</div></div></div>
+        <svg id="v4" viewBox="0 0 980 260"></svg>
+        <div class="vctrl"><label for="vr4">📍 미래의 해</label><input type="range" id="vr4" min="2025" max="2090" value="2050" style="--fill:var(--leaf)"><output id="vo4">2050년</output></div>
+        <div class="vs">IPCC AR6 WGI SPM 표 SPM.1 · 20년 평균을 교육용으로 연결</div>
+      </div>
+      <div class="pane" data-p="4">
+        <div class="vt">데이터를 근거로, 나의 생각을 기록합니다</div>
+        <div class="vd">4차시 동안 쓴 모든 답이 한 화면에 모이고, 선생님께 제출됩니다.</div>
+        <div class="prompt-cards">
+          <div class="pc" style="--c:var(--leaf)"><b>🌱 SSP1-1.9 · 2050년</b>여름에도 학교 운동장에서 친구들과 놀 수 있다.</div>
+          <div class="pc" style="--c:var(--coral)"><b>🔥 SSP5-8.5 · 2050년</b>폭염 때문에 여름방학이 길어졌다.</div>
+          <div class="pc" style="--c:var(--sky)"><b>💡 알게 된 점</b>우리나라의 1인당 배출량이 생각보다 많다.</div>
+          <div class="pc" style="--c:var(--lilac)"><b>💗 느낀 점</b>지금부터 배출량을 줄이려고 노력해야겠다.</div>
+        </div>
+        <div class="vs">학생 예시 답안 · 실제 학습지 응답을 바탕으로 재구성</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. 웹앱 구축 방법 -->
+<section class="slide" data-title="웹앱 구축 방법" data-c="var(--coral)">
+  <p class="eyebrow a" style="--d:0">HOW IT WORKS</p>
+  <h2 class="h-m a" style="--d:1">화면은 HTML로 자유롭게, 저장은 Python으로 안전하게.</h2>
+  <div class="arch a" style="--d:2">
+    <div class="node" style="--c:var(--sky)"><span class="ic">📱</span><span class="t">학생 화면</span><span class="s">HTML · CSS · JS<br>SVG 그래프 엔진</span></div>
+    <div class="link" style="--c:var(--sky)"></div>
+    <div class="node" style="--c:var(--sun)"><span class="ic">🐍</span><span class="t">Streamlit</span><span class="s">양방향 컴포넌트<br>로그인 · 자동 저장 · 제출</span></div>
+    <div class="link" style="--c:var(--sun)"></div>
+    <div class="node" style="--c:var(--coral)"><span class="ic">🔥</span><span class="t">Firebase</span><span class="s">Firestore<br>학생 답 영구 저장</span></div>
+  </div>
+  <p class="lead a" style="--d:3">Firebase 열쇠는 서버에만 둡니다. <b>학생 화면에는 키가 없습니다.</b></p>
+  <div class="build a" style="--d:5">
+    <div class="bstep" style="--c:var(--coral)"><b>01</b><span>학습지 설계</span><small>종이 학습지 2종 → 4챕터 49문항</small></div>
+    <div class="bstep" style="--c:var(--sky)"><b>02</b><span>데이터 시각화</span><small>HadCRUT5 · OWID · IPCC를 슬라이더 그래프로</small></div>
+    <div class="bstep" style="--c:var(--sun)"><b>03</b><span>저장과 수합</span><small>Firestore 자동 저장 · 교사 대시보드</small></div>
+    <div class="bstep" style="--c:var(--leaf)"><b>04</b><span>배포</span><small>GitHub → Streamlit Community Cloud</small></div>
+  </div>
+</section>
+
+<!-- 9. 수업의 목표 -->
+<section class="slide" data-title="수업의 목표" data-c="var(--leaf)">
+  <p class="eyebrow a" style="--d:0">GOAL · 이 수업이 기르는 힘</p>
+  <div class="goals">
+    <div class="goal a" style="--d:1;--c:var(--sky)"><span class="gl"></span><span class="k">DATA LITERACY</span><span class="w">데이터<br>리터러시</span><span class="s">데이터를 읽고, 직접 움직이고,<br>근거로 말합니다.</span>
+      <ul><li>그래프에서 변화의 시점 찾기</li><li>나라·연도를 바꾸며 비교하기</li><li>숫자를 근거로 예측 글쓰기</li></ul></div>
+    <div class="goal a" style="--d:2;--c:var(--leaf)"><span class="gl"></span><span class="k">FUTURE CITIZENSHIP</span><span class="w">미래시민<br>역량</span><span class="s">지속가능한 미래사회를 위한<br>주체성을 기릅니다.</span>
+      <ul><li>시나리오는 예언이 아닌 선택</li><li>나와 공동체의 문제로 연결하기</li><li>지금 할 수 있는 실천 다짐하기</li></ul></div>
+  </div>
+</section>
+
+<!-- 10. 데모 -->
+<section class="slide" data-title="직접 해 보기" data-c="var(--leaf)">
+  <div class="glow" style="width:900px;height:900px;left:-250px;bottom:-400px;background:var(--leaf);opacity:.22"></div>
+  <div class="row" style="align-items:center;gap:100px">
+    <div class="qr a zoom" style="--d:1"><svg viewBox="0 0 29 29" role="img" aria-label="웹앱 접속 QR코드"><path d="M0,0h1v1h-1zM1,0h1v1h-1zM2,0h1v1h-1zM3,0h1v1h-1zM4,0h1v1h-1zM5,0h1v1h-1zM6,0h1v1h-1zM10,0h1v1h-1zM12,0h1v1h-1zM14,0h1v1h-1zM18,0h1v1h-1zM19,0h1v1h-1zM22,0h1v1h-1zM23,0h1v1h-1zM24,0h1v1h-1zM25,0h1v1h-1zM26,0h1v1h-1zM27,0h1v1h-1zM28,0h1v1h-1zM0,1h1v1h-1zM6,1h1v1h-1zM10,1h1v1h-1zM16,1h1v1h-1zM17,1h1v1h-1zM18,1h1v1h-1zM22,1h1v1h-1zM28,1h1v1h-1zM0,2h1v1h-1zM2,2h1v1h-1zM3,2h1v1h-1zM4,2h1v1h-1zM6,2h1v1h-1zM12,2h1v1h-1zM14,2h1v1h-1zM15,2h1v1h-1zM17,2h1v1h-1zM19,2h1v1h-1zM22,2h1v1h-1zM24,2h1v1h-1zM25,2h1v1h-1zM26,2h1v1h-1zM28,2h1v1h-1zM0,3h1v1h-1zM2,3h1v1h-1zM3,3h1v1h-1zM4,3h1v1h-1zM6,3h1v1h-1zM12,3h1v1h-1zM13,3h1v1h-1zM16,3h1v1h-1zM18,3h1v1h-1zM19,3h1v1h-1zM20,3h1v1h-1zM22,3h1v1h-1zM24,3h1v1h-1zM25,3h1v1h-1zM26,3h1v1h-1zM28,3h1v1h-1zM0,4h1v1h-1zM2,4h1v1h-1zM3,4h1v1h-1zM4,4h1v1h-1zM6,4h1v1h-1zM9,4h1v1h-1zM11,4h1v1h-1zM12,4h1v1h-1zM18,4h1v1h-1zM22,4h1v1h-1zM24,4h1v1h-1zM25,4h1v1h-1zM26,4h1v1h-1zM28,4h1v1h-1zM0,5h1v1h-1zM6,5h1v1h-1zM8,5h1v1h-1zM9,5h1v1h-1zM10,5h1v1h-1zM12,5h1v1h-1zM15,5h1v1h-1zM16,5h1v1h-1zM19,5h1v1h-1zM20,5h1v1h-1zM22,5h1v1h-1zM28,5h1v1h-1zM0,6h1v1h-1zM1,6h1v1h-1zM2,6h1v1h-1zM3,6h1v1h-1zM4,6h1v1h-1zM5,6h1v1h-1zM6,6h1v1h-1zM8,6h1v1h-1zM10,6h1v1h-1zM12,6h1v1h-1zM14,6h1v1h-1zM16,6h1v1h-1zM18,6h1v1h-1zM20,6h1v1h-1zM22,6h1v1h-1zM23,6h1v1h-1zM24,6h1v1h-1zM25,6h1v1h-1zM26,6h1v1h-1zM27,6h1v1h-1zM28,6h1v1h-1zM9,7h1v1h-1zM11,7h1v1h-1zM13,7h1v1h-1zM15,7h1v1h-1zM16,7h1v1h-1zM17,7h1v1h-1zM18,7h1v1h-1zM20,7h1v1h-1zM0,8h1v1h-1zM3,8h1v1h-1zM5,8h1v1h-1zM6,8h1v1h-1zM8,8h1v1h-1zM11,8h1v1h-1zM12,8h1v1h-1zM14,8h1v1h-1zM16,8h1v1h-1zM20,8h1v1h-1zM21,8h1v1h-1zM23,8h1v1h-1zM1,9h1v1h-1zM4,9h1v1h-1zM5,9h1v1h-1zM9,9h1v1h-1zM10,9h1v1h-1zM11,9h1v1h-1zM13,9h1v1h-1zM15,9h1v1h-1zM16,9h1v1h-1zM20,9h1v1h-1zM21,9h1v1h-1zM22,9h1v1h-1zM25,9h1v1h-1zM28,9h1v1h-1zM0,10h1v1h-1zM1,10h1v1h-1zM3,10h1v1h-1zM4,10h1v1h-1zM6,10h1v1h-1zM8,10h1v1h-1zM9,10h1v1h-1zM11,10h1v1h-1zM12,10h1v1h-1zM13,10h1v1h-1zM14,10h1v1h-1zM15,10h1v1h-1zM19,10h1v1h-1zM23,10h1v1h-1zM24,10h1v1h-1zM25,10h1v1h-1zM26,10h1v1h-1zM27,10h1v1h-1zM0,11h1v1h-1zM2,11h1v1h-1zM9,11h1v1h-1zM10,11h1v1h-1zM12,11h1v1h-1zM13,11h1v1h-1zM16,11h1v1h-1zM18,11h1v1h-1zM20,11h1v1h-1zM23,11h1v1h-1zM24,11h1v1h-1zM26,11h1v1h-1zM27,11h1v1h-1zM1,12h1v1h-1zM6,12h1v1h-1zM8,12h1v1h-1zM10,12h1v1h-1zM11,12h1v1h-1zM12,12h1v1h-1zM14,12h1v1h-1zM15,12h1v1h-1zM16,12h1v1h-1zM17,12h1v1h-1zM21,12h1v1h-1zM22,12h1v1h-1zM25,12h1v1h-1zM27,12h1v1h-1zM28,12h1v1h-1zM0,13h1v1h-1zM1,13h1v1h-1zM3,13h1v1h-1zM10,13h1v1h-1zM12,13h1v1h-1zM13,13h1v1h-1zM14,13h1v1h-1zM15,13h1v1h-1zM16,13h1v1h-1zM19,13h1v1h-1zM20,13h1v1h-1zM0,14h1v1h-1zM2,14h1v1h-1zM5,14h1v1h-1zM6,14h1v1h-1zM7,14h1v1h-1zM9,14h1v1h-1zM12,14h1v1h-1zM13,14h1v1h-1zM14,14h1v1h-1zM17,14h1v1h-1zM21,14h1v1h-1zM22,14h1v1h-1zM24,14h1v1h-1zM25,14h1v1h-1zM26,14h1v1h-1zM27,14h1v1h-1zM28,14h1v1h-1zM2,15h1v1h-1zM3,15h1v1h-1zM4,15h1v1h-1zM5,15h1v1h-1zM7,15h1v1h-1zM8,15h1v1h-1zM10,15h1v1h-1zM12,15h1v1h-1zM16,15h1v1h-1zM17,15h1v1h-1zM20,15h1v1h-1zM21,15h1v1h-1zM23,15h1v1h-1zM24,15h1v1h-1zM25,15h1v1h-1zM27,15h1v1h-1zM3,16h1v1h-1zM4,16h1v1h-1zM6,16h1v1h-1zM9,16h1v1h-1zM10,16h1v1h-1zM11,16h1v1h-1zM13,16h1v1h-1zM15,16h1v1h-1zM17,16h1v1h-1zM20,16h1v1h-1zM21,16h1v1h-1zM27,16h1v1h-1zM1,17h1v1h-1zM2,17h1v1h-1zM3,17h1v1h-1zM8,17h1v1h-1zM12,17h1v1h-1zM13,17h1v1h-1zM14,17h1v1h-1zM17,17h1v1h-1zM20,17h1v1h-1zM21,17h1v1h-1zM22,17h1v1h-1zM23,17h1v1h-1zM25,17h1v1h-1zM28,17h1v1h-1zM0,18h1v1h-1zM5,18h1v1h-1zM6,18h1v1h-1zM8,18h1v1h-1zM9,18h1v1h-1zM12,18h1v1h-1zM14,18h1v1h-1zM16,18h1v1h-1zM18,18h1v1h-1zM20,18h1v1h-1zM21,18h1v1h-1zM22,18h1v1h-1zM24,18h1v1h-1zM27,18h1v1h-1zM28,18h1v1h-1zM5,19h1v1h-1zM9,19h1v1h-1zM11,19h1v1h-1zM12,19h1v1h-1zM14,19h1v1h-1zM15,19h1v1h-1zM16,19h1v1h-1zM17,19h1v1h-1zM18,19h1v1h-1zM19,19h1v1h-1zM22,19h1v1h-1zM24,19h1v1h-1zM27,19h1v1h-1zM28,19h1v1h-1zM0,20h1v1h-1zM2,20h1v1h-1zM3,20h1v1h-1zM4,20h1v1h-1zM5,20h1v1h-1zM6,20h1v1h-1zM7,20h1v1h-1zM8,20h1v1h-1zM9,20h1v1h-1zM10,20h1v1h-1zM11,20h1v1h-1zM12,20h1v1h-1zM20,20h1v1h-1zM21,20h1v1h-1zM22,20h1v1h-1zM23,20h1v1h-1zM24,20h1v1h-1zM26,20h1v1h-1zM8,21h1v1h-1zM9,21h1v1h-1zM10,21h1v1h-1zM14,21h1v1h-1zM16,21h1v1h-1zM17,21h1v1h-1zM18,21h1v1h-1zM20,21h1v1h-1zM24,21h1v1h-1zM26,21h1v1h-1zM27,21h1v1h-1zM28,21h1v1h-1zM0,22h1v1h-1zM1,22h1v1h-1zM2,22h1v1h-1zM3,22h1v1h-1zM4,22h1v1h-1zM5,22h1v1h-1zM6,22h1v1h-1zM9,22h1v1h-1zM10,22h1v1h-1zM20,22h1v1h-1zM22,22h1v1h-1zM24,22h1v1h-1zM27,22h1v1h-1zM0,23h1v1h-1zM6,23h1v1h-1zM8,23h1v1h-1zM9,23h1v1h-1zM11,23h1v1h-1zM12,23h1v1h-1zM14,23h1v1h-1zM15,23h1v1h-1zM19,23h1v1h-1zM20,23h1v1h-1zM24,23h1v1h-1zM25,23h1v1h-1zM26,23h1v1h-1zM0,24h1v1h-1zM2,24h1v1h-1zM3,24h1v1h-1zM4,24h1v1h-1zM6,24h1v1h-1zM10,24h1v1h-1zM12,24h1v1h-1zM17,24h1v1h-1zM18,24h1v1h-1zM20,24h1v1h-1zM21,24h1v1h-1zM22,24h1v1h-1zM23,24h1v1h-1zM24,24h1v1h-1zM28,24h1v1h-1zM0,25h1v1h-1zM2,25h1v1h-1zM3,25h1v1h-1zM4,25h1v1h-1zM6,25h1v1h-1zM8,25h1v1h-1zM12,25h1v1h-1zM13,25h1v1h-1zM21,25h1v1h-1zM22,25h1v1h-1zM23,25h1v1h-1zM24,25h1v1h-1zM25,25h1v1h-1zM26,25h1v1h-1zM27,25h1v1h-1zM0,26h1v1h-1zM2,26h1v1h-1zM3,26h1v1h-1zM4,26h1v1h-1zM6,26h1v1h-1zM9,26h1v1h-1zM10,26h1v1h-1zM13,26h1v1h-1zM21,26h1v1h-1zM24,26h1v1h-1zM25,26h1v1h-1zM26,26h1v1h-1zM28,26h1v1h-1zM0,27h1v1h-1zM6,27h1v1h-1zM10,27h1v1h-1zM11,27h1v1h-1zM15,27h1v1h-1zM17,27h1v1h-1zM20,27h1v1h-1zM24,27h1v1h-1zM27,27h1v1h-1zM0,28h1v1h-1zM1,28h1v1h-1zM2,28h1v1h-1zM3,28h1v1h-1zM4,28h1v1h-1zM5,28h1v1h-1zM6,28h1v1h-1zM8,28h1v1h-1zM9,28h1v1h-1zM12,28h1v1h-1zM13,28h1v1h-1zM17,28h1v1h-1zM19,28h1v1h-1zM20,28h1v1h-1zM22,28h1v1h-1zM24,28h1v1h-1zM25,28h1v1h-1zM27,28h1v1h-1z" fill="#07080c"/></svg></div>
+    <div class="col">
+      <p class="eyebrow a" style="--d:0">LIVE DEMO</p>
+      <h2 class="h-l a" style="--d:2">지금, 직접<br>움직여 보세요.</h2>
+      <a class="url grad a" style="--d:3" href="https://climate602.streamlit.app/" target="_blank" rel="noopener">climate602.streamlit.app</a>
+      <p class="small a" style="--d:4">GitHub · github.com/suimmme-ops/project2</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11. 마무리 -->
+<section class="slide" data-title="마무리" data-c="var(--lilac)">
+  <div class="glow" style="width:1300px;height:700px;left:300px;top:200px;background:var(--sky);opacity:.18"></div>
+  <h2 class="h-l a" style="--d:0"><span class="dim">미래는 예측하는 것이 아니라,</span><br><span class="grad" style="font-size:1.25em">선택하는 것입니다.</span></h2>
+  <div class="dots a" style="--d:3"><i style="background:var(--coral)"></i><i style="background:var(--sky)"></i><i style="background:var(--sun)"></i><i style="background:var(--leaf)"></i><i style="background:var(--lilac)"></i></div>
+  <p class="lead a" style="--d:4">감사합니다.</p>
+</section>
+
+</div>
+</div>
+
+<div id="hud">
+  <span class="brand"><i style="background:var(--coral)"></i><i style="background:var(--sky)"></i><i style="background:var(--sun)"></i><i style="background:var(--leaf)"></i>기후 탐험 학습지</span>
+  <span class="pager"><button id="ovBtn" type="button" title="목차 (G)">▦ 목차</button><input type="range" id="page" min="1" max="12" value="1" aria-label="페이지 이동"><span id="count">1 / 12</span><button id="fs" type="button" title="전체 화면 (F)">전체 화면</button></span>
+</div>
+<div id="bar"></div>
+<div id="jump" hidden></div>
+<div id="overview" hidden><h3>목차 · 원하는 페이지를 누르세요 (Esc 닫기)</h3><div id="ovgrid"></div></div>
+
+<script>
+(function () {
+  const D = {"temp":[-0.07,0.09,0.13,0.1,0.06,0.07,0.03,-0.11,-0.04,0.07,-0.05,-0.11,-0.2,-0.03,-0.14,-0.04,-0.04,-0.04,-0.01,0.04,0.03,-0.02,0.05,0.04,-0.01,-0.01,-0.05,0.28,0.37,0.07,0.05,0.14,0.09,0.03,-0.12,-0.1,-0.05,-0.13,-0.01,0.11,-0.14,-0.04,-0.15,-0.14,-0.12,-0.09,0.08,0.1,-0.12,0.01,0.13,0.07,-0.08,-0.18,-0.24,-0.05,0.04,-0.14,-0.15,-0.17,-0.17,-0.18,-0.12,-0.11,0.1,0.17,-0.06,-0.19,-0.07,0.03,0.05,0.12,0.02,0.04,0.05,0.08,0.23,0.13,0.15,-0.03,0.19,0.25,0.21,0.03,0.18,0.14,0.19,0.34,0.34,0.32,0.43,0.39,0.36,0.36,0.5,0.4,0.23,0.26,0.23,0.2,0.12,0.28,0.37,0.43,0.24,0.16,0.09,0.32,0.34,0.31,0.24,0.34,0.3,0.33,0.06,0.15,0.21,0.24,0.19,0.33,0.27,0.15,0.27,0.41,0.19,0.25,0.15,0.46,0.36,0.45,0.55,0.6,0.39,0.58,0.4,0.4,0.45,0.6,0.64,0.53,0.71,0.69,0.48,0.52,0.58,0.73,0.63,0.77,0.93,0.68,0.68,0.84,0.89,0.9,0.82,0.96,0.92,0.94,0.82,0.95,1.03,0.89,0.93,0.98,1.02,1.18,1.28,1.19,1.11,1.25,1.27,1.12,1.16,1.47,1.53,1.41],"kor":[null,null,null,null,null,0.0,null,null,null,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,null,0.0,0.0,0.0,0.0,0.0,0.0,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.03,0.04,0.05,0.06,0.06,0.06,0.06,0.0,0.03,0.05,0.09,0.11,0.11,0.15,0.17,0.23,0.24,0.29,0.33,0.35,0.37,0.44,0.48,0.54,0.63,0.75,0.77,0.85,1.0,1.15,1.19,1.33,1.65,1.76,1.77,2.11,2.14,2.28,2.56,2.86,3.03,3.52,3.53,3.61,3.58,3.73,3.96,4.1,4.23,4.38,4.92,5.13,5.68,6.2,6.72,7.36,7.88,8.46,9.22,9.69,8.18,8.83,9.41,9.69,10.06,10.21,10.3,10.42,10.49,10.83,11.02,11.08,12.19,12.69,12.66,12.67,12.45,12.44,12.44,12.71,12.98,12.48,11.52,11.88,11.72,11.38,11.29],"gbr":[10.21,9.91,10.2,10.19,10.15,10.19,10.47,10.84,10.48,10.49,10.5,10.7,10.08,10.97,10.6,10.69,11.03,10.86,10.07,9.81,10.32,7.13,9.44,10.03,10.53,9.96,5.66,10.45,9.88,10.41,10.02,9.35,8.96,8.87,9.53,9.61,10.1,10.37,9.92,9.9,10.39,10.34,10.16,10.06,10.02,9.23,9.43,9.81,10.14,10.18,9.96,10.8,10.45,10.63,10.83,11.26,11.16,11.04,10.71,10.46,11.11,11.13,11.13,11.25,11.26,11.45,11.3,10.77,10.98,11.33,11.72,11.82,11.56,11.74,10.98,10.73,10.65,10.76,10.77,11.46,10.29,9.96,9.74,9.68,9.37,9.89,10.02,10.05,10.0,10.17,10.49,10.59,10.29,10.02,9.9,9.73,10.06,9.63,9.7,9.55,9.63,9.75,9.41,9.56,9.53,9.41,9.3,9.09,8.79,7.91,8.12,7.4,7.62,7.42,6.76,6.46,6.06,5.84,5.69,5.43,4.84,5.06,4.56,4.48,4.53],"world":[2.0,2.0,2.1,2.2,2.6,2.6,2.8,2.8,2.9,3.0,3.3,3.5,3.6,3.8,4.1,4.3,4.5,4.8,4.9,5.2,5.4,5.7,6.3,6.7,6.3,6.8,6.9,7.0,7.1,7.6,8.6,8.9,9.4,10.0,10.1,10.2,10.3,10.8,12.0,12.0,13.1,13.7,13.8,13.6,14.1,15.0,15.5,16.2,17.1,18.6,19.6,20.3,20.8,22.6,22.9,24.4,25.5,29.0,27.9,29.1,30.5,31.0,32.5,35.2,32.0,31.5,34.0,35.6,35.1,30.4,35.5,31.1,32.6,37.0,37.2,37.4,36.8,40.1,40.0,42.9,39.6,35.4,31.9,33.6,36.6,38.4,42.1,45.0,42.3,44.7,48.8,50.0,49.8,50.8,51.6,42.9,46.1,51.7,54.5,52.0,59.3,63.8,64.7,66.5,67.9,74.4,79.3,81.9,84.2,88.6,93.9,94.1,97.5,102.7,108.2,113.1,118.6,122.4,129.1,137.6,149.0,155.0,162.2,170.8,170.0,169.9,178.6,183.6,190.2,195.1,194.1,188.8,187.3,189.0,194.6,201.4,204.4,211.1,219.2,222.0,227.3,232.1,225.2,227.5,229.7,235.2,242.3,243.8,243.0,248.4,255.1,256.9,262.7,276.5,286.1,296.0,305.9,315.0,320.5,315.1,333.2,344.8,349.5,352.8,354.7,354.0,353.9,359.7,367.3,370.9,351.6,368.7,375.3,380.9,386.0],"wy0":1850};
+  const $ = s => document.querySelector(s);
+  const slides = [...document.querySelectorAll(".slide")];
+  const N = slides.length;
+  const stage = $("#stage"), deck = $("#deck");
+  let cur = 0;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function fit() { stage.style.setProperty("--s", Math.min(deck.clientWidth / 1920, deck.clientHeight / 1080)); }
+  addEventListener("resize", fit); fit();
+
+  /* ---------------- 이동 ---------------- */
+  const page = $("#page"); page.max = N;
+  function paint(r) { r.style.setProperty("--pct", ((r.value - r.min) / (r.max - r.min) * 100) + "%"); }
+  function go(n) {
+    n = Math.max(0, Math.min(N - 1, n));
+    slides.forEach((s, i) => { s.classList.toggle("active", i === n); s.setAttribute("aria-hidden", i === n ? "false" : "true"); });
+    cur = n;
+    $("#count").textContent = `${n + 1} / ${N}`;
+    page.value = n + 1; paint(page);
+    $("#bar").style.width = ((n + 1) / N * 100) + "%";
+    try { history.replaceState(null, "", "#" + (n + 1)); } catch (e) { }
+    (ON[n] || (() => { }))();
+  }
+  const next = () => go(cur + 1), prev = () => go(cur - 1);
+  page.addEventListener("input", () => go(page.value - 1));
+
+  // 숫자를 누르고 Enter → 해당 페이지
+  let typed = "", typedT;
+  const jump = $("#jump");
+  function typeDigit(d) {
+    typed = (typed + d).slice(-2); jump.textContent = typed; jump.hidden = false;
+    clearTimeout(typedT); typedT = setTimeout(() => { typed = ""; jump.hidden = true; }, 1600);
+  }
+
+  const ov = $("#overview"), ovgrid = $("#ovgrid");
+  ovgrid.innerHTML = slides.map((s, i) => `<button type="button" data-i="${i}" style="--c:${s.dataset.c}"><b>${i + 1}</b><span>${s.dataset.title}</span></button>`).join("");
+  ovgrid.addEventListener("click", e => { const b = e.target.closest("button"); if (b) { toggleOv(false); go(+b.dataset.i); } });
+  function toggleOv(show) {
+    show = show ?? ov.hidden;
+    ov.hidden = !show;
+    if (show) { ovgrid.querySelectorAll("button").forEach((b, i) => b.classList.toggle("cur", i === cur)); ovgrid.children[cur].focus(); }
+  }
+  $("#ovBtn").addEventListener("click", e => { e.stopPropagation(); toggleOv(); e.currentTarget.blur(); });
+
+  addEventListener("keydown", e => {
+    const t = e.target;
+    if (!ov.hidden) { if (e.key === "Escape" || e.key === "g" || e.key === "G") toggleOv(false); return; }
+    if (/^[0-9]$/.test(e.key)) { typeDigit(e.key); return; }
+    if (e.key === "Enter" && typed) { go(+typed - 1); typed = ""; jump.hidden = true; return; }
+    if (t.matches && t.matches("input[type=range]") && t.id !== "page" && ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return;
+    if (t.matches && t.matches("button") && e.key === "Enter") return;
+    if ([" ", "ArrowRight", "PageDown", "ArrowDown", "Enter"].includes(e.key)) { e.preventDefault(); next(); }
+    else if (["ArrowLeft", "PageUp", "ArrowUp", "Backspace"].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === "Home") go(0);
+    else if (e.key === "End") go(N - 1);
+    else if (e.key === "f" || e.key === "F") toggleFs();
+    else if (e.key === "g" || e.key === "G" || e.key === "Escape") toggleOv(e.key === "Escape" ? false : undefined);
+  });
+  deck.addEventListener("click", e => { if (e.target.closest("a, input, button, label, .ui")) return; next(); });
+  addEventListener("contextmenu", e => { e.preventDefault(); prev(); });
+  // 슬라이더를 놓으면 포커스를 풀어 화살표가 다시 페이지를 넘기도록
+  document.addEventListener("pointerup", e => { const r = e.target.closest && e.target.closest("input[type=range]"); if (r) setTimeout(() => r.blur(), 0); });
+  let tx = null;
+  deck.addEventListener("touchstart", e => { tx = e.target.closest("input, button") ? null : e.touches[0].clientX; }, { passive: true });
+  deck.addEventListener("touchend", e => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; tx = null; if (Math.abs(dx) > 50) (dx < 0 ? next : prev)(); });
+  function toggleFs() { try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => { }); } catch (e) { } }
+  $("#fs").addEventListener("click", e => { e.stopPropagation(); toggleFs(); e.currentTarget.blur(); });
+  let idleT;
+  addEventListener("mousemove", () => { document.body.classList.remove("idle"); clearTimeout(idleT); idleT = setTimeout(() => document.body.classList.add("idle"), 3000); });
+
+  /* ---------------- 그래프 도우미 ---------------- */
+  function bindRange(id, fn, fmt) {
+    const r = document.getElementById(id), out = document.getElementById(id.replace(/^r/, "o").replace(/^vr/, "vo"));
+    const go2 = () => { paint(r); if (out) out.textContent = fmt(+r.value); fn(+r.value); };
+    r.addEventListener("input", go2); go2();
+  }
+  const sign = (v, d = 2) => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(d);
+  const mixc = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  const tcol = v => `rgb(${v < 0 ? mixc([236, 233, 225], [28, 92, 171], Math.min(1, v / -0.35)) : mixc([236, 233, 225], [196, 43, 43], Math.min(1, v / 1.3))})`;
+  function axes(o) {
+    // o: {w,h,m,x0,x1,y0,y1,xt,yt,yf,ink,grid,mute}
+    const X = v => o.m.l + (v - o.x0) / (o.x1 - o.x0) * (o.w - o.m.l - o.m.r);
+    const Y = v => o.h - o.m.b - (v - o.y0) / (o.y1 - o.y0) * (o.h - o.m.t - o.m.b);
+    let s = "";
+    o.yt.forEach(v => { s += `<line x1="${o.m.l}" x2="${o.w - o.m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="${o.grid}" stroke-width="1.5"/><text x="${o.m.l - 10}" y="${Y(v) + 6}" text-anchor="end" font-size="17" font-weight="700" fill="${o.mute}">${o.yf(v)}</text>`; });
+    o.xt.forEach(v => { s += `<text x="${X(v)}" y="${o.h - o.m.b + 28}" text-anchor="middle" font-size="17" font-weight="800" fill="${o.mute}">${v}</text>`; });
+    s += `<line x1="${o.m.l}" x2="${o.w - o.m.r}" y1="${o.h - o.m.b}" y2="${o.h - o.m.b}" stroke="${o.ink}" stroke-width="3"/>`;
+    return { X, Y, s };
+  }
+  const path = (pts, X, Y) => pts.map((p, i) => `${i ? "L" : "M"}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join("");
+  const marker = (x, top, bot, label, fill, ink) => `<line x1="${x}" x2="${x}" y1="${top}" y2="${bot}" stroke="${ink}" stroke-width="3"/><g transform="translate(${x - 52},${top - 34})"><rect width="104" height="30" rx="9" fill="${fill}" stroke="${ink}" stroke-width="2.5"/><text x="52" y="21" text-anchor="middle" font-size="17" font-weight="900" fill="#15151a">${label}</text></g>`;
+
+  const temps = D.temp.map((v, i) => [1850 + i, v]);
+  const ma10 = temps.map((p, i) => i < 9 ? null : [p[0], temps.slice(i - 9, i + 1).reduce((a, q) => a + q[1], 0) / 10]).filter(Boolean);
+
+  /* 슬라이드별 시작 동작 */
+  const ON = {};
+
+  /* 1. 쌓이는 학습지 */
+  (function () {
+    const piles = $("#piles");
+    const cols = [["1차시", 7, "var(--coral)"], ["2차시", 24, "var(--sky)"], ["3차시", 36, "var(--sun)"], ["4차시", 47, "var(--leaf)"]];
+    piles.insertAdjacentHTML("beforeend", cols.map(([n, q, c], p) => {
+      const k = Math.ceil(q / 5);
+      const sheets = Array.from({ length: k }, (_, i) => `<div class="sheet" style="--c:${c};--k:${i};--p:${p};--r:${((i * 37 + p * 11) % 9 - 4)}deg;bottom:${i * 12}px;left:${(i % 2) * 6}px"></div>`).join("");
+      return `<div class="pile"><div class="stack">${sheets}${p === 2 ? '<div class="lost"></div>' : ""}</div><div class="lab"><b>${n}</b><span>누적 문항 ${q}개</span></div></div>`;
+    }).join(""));
+    // 생각의 흐름: 차시마다 끊긴 선
+    let svg = "";
+    for (let p = 0; p < 4; p++) {
+      const x0 = p * 250 + 40, x1 = p * 250 + 200;
+      svg += `<path class="seg" style="--p:${p}" d="M${x0},20 C${x0 + 50},0 ${x1 - 50},40 ${x1},20" stroke="${cols[p][2]}" stroke-width="6" fill="none" stroke-linecap="round"/>`;
+      if (p < 3) svg += `<g class="cut" style="--p:${p};transform-origin:${x1 + 25}px 20px"><line x1="${x1 + 15}" y1="10" x2="${x1 + 35}" y2="30" stroke="#ff5a4f" stroke-width="5" stroke-linecap="round"/><line x1="${x1 + 35}" y1="10" x2="${x1 + 15}" y2="30" stroke="#ff5a4f" stroke-width="5" stroke-linecap="round"/></g>`;
+    }
+    $("#threadSvg").innerHTML = svg;
+  })();
+
+  /* 2. 흩어진 데이터 창 */
+  (function () {
+    const W = [
+      ["ourworldindata.org", 0, 0, "line", "#5ec8f2", 5.5],
+      ["ipcc.ch/report/ar6", 150, 130, "fan", "#ff8a65", 7],
+      ["coastal.climatecentral.org", 10, 260, "map", "#b9a6f5", 6],
+      ["tips.energy.or.kr", 1160, 0, "bars", "#ffd23f", 6.5],
+      ["6-2climate.netlify.app", 1310, 130, "line2", "#ff8a65", 7.5],
+      ["climate-action-project", 1170, 260, "bars2", "#7bd389", 5],
+    ];
+    const art = (t, c) => {
+      if (t === "line") return `<polyline points="20,110 80,104 140,100 200,90 250,70 300,30" fill="none" stroke="${c}" stroke-width="5"/>`;
+      if (t === "line2") return `<polyline points="20,40 90,60 150,55 210,85 300,100" fill="none" stroke="${c}" stroke-width="5"/>`;
+      if (t === "bars") return [70, 50, 34, 26, 20, 16].map((h, i) => `<rect x="${24 + i * 48}" y="${118 - h}" width="34" height="${h}" rx="4" fill="${c}"/>`).join("");
+      if (t === "bars2") return [30, 45, 62, 80, 98].map((h, i) => `<rect x="${30 + i * 56}" y="${118 - h}" width="40" height="${h}" rx="4" fill="${c}"/>`).join("");
+      if (t === "fan") return `<path d="M20,100 L300,30 L300,80 Z" fill="${c}" opacity=".35"/><polyline points="20,100 300,55" fill="none" stroke="${c}" stroke-width="5"/>`;
+      return `<circle cx="120" cy="70" r="46" fill="${c}" opacity=".4"/><circle cx="210" cy="60" r="30" fill="${c}" opacity=".6"/>`;
+    };
+    $("#scatter").insertAdjacentHTML("beforeend", W.map(([u, x, y, t, c, dur], i) =>
+      `<div class="win" style="left:${x}px;top:${y}px;--d:${i + 3};--t:${dur / 2}s"><div class="bar"><i></i><i></i><i></i><span>${u}</span></div><svg viewBox="0 0 330 130">${art(t, c)}</svg></div>`).join(""));
+    $("#wires").innerHTML = W.map(([, x, y]) => `<path d="M${x + 165},${y + 85} Q${(x + 820) / 2},${(y + 200) / 2 + 80} 820,200"/>`).join("");
+  })();
+
+  /* 3. 학생 화면 목업: 차시 버튼 */
+  (function () {
+    const C = [
+      ["1", "기후 위기", "var(--coral)", "기후변화, 얼마나 심각할까?", "지구가 따뜻해지면 왜 홍수가 많이 발생할까요?", "기온이 올라서 물이 더 증발합니다. 구름에 비가 많이 차서 한꺼번에 많이 내립니다."],
+      ["2", "데이터 분석", "var(--sky)", "데이터로 기후변화 분석하기", "지구의 기온이 급격하게 상승하기 시작한 시기는?", "약 1980년경부터. 이때 공장과 자동차가 많이 늘어났다."],
+      ["3", "1.5℃", "var(--sun)", "1.5℃, 생존의 마지노선", "과학자들이 '1.5℃ 이내'로 막아야 한다고 말하는 이유는?", "1.5℃를 넘으면 폭염과 폭우, 가뭄이 훨씬 더 심해질 수 있기 때문이다."],
+      ["4", "2050 예측", "var(--leaf)", "2050년, 미래 예측하기", "🌱 매우 낮은 배출(SSP1-1.9) 2050년, 우리 사회의 모습은?", "2050년, 나는 36살이 되었다. 여름에도 학교 운동장에서 놀 수 있다."],
+      ["★", "마무리", "var(--lilac)", "마무리 성찰", "오늘 활동을 통해 느낀 점을 기록해 봅시다.", "이제부터 이산화탄소 배출량을 줄이려고 노력해야겠다는 생각이 들었다."],
+    ];
+    const chips = $("#mockChips"), body = $("#mockBody");
+    chips.innerHTML = C.map((c, i) => `<button type="button" class="chipbtn" data-i="${i}" style="--c:${c[2]}" aria-pressed="${i === 0}"><span class="no">${c[0]}</span>${c[1]}</button>`).join("");
+    let typing;
+    function show(i) {
+      const c = C[i];
+      chips.querySelectorAll("button").forEach((b, k) => b.setAttribute("aria-pressed", k === i));
+      body.innerHTML = `<div class="chhead" style="--c:${c[2]}"><b>${c[0]}</b><span>${c[3]}</span><span class="saved">✅ 자동 저장됨</span></div>
+        <div class="qa" style="--c:${c[2]}"><div class="q"><i>Q</i>${c[4]}</div><div class="ans"><span class="tx"></span><span class="caret"></span></div></div>
+        <div class="qa" style="--c:${c[2]};opacity:.55"><div class="q"><i>Q</i>지난 차시에 쓴 답 다시 보기 ↩</div></div>`;
+      clearInterval(typing);
+      const tx = body.querySelector(".tx"); let n = 0;
+      if (reduce) { tx.textContent = c[5]; return; }
+      typing = setInterval(() => { tx.textContent = c[5].slice(0, ++n); if (n >= c[5].length) clearInterval(typing); }, 45);
+    }
+    let auto, idx = 0;
+    chips.addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; e.stopPropagation(); clearInterval(auto); idx = +b.dataset.i; show(idx); });
+    ON[3] = () => { idx = 0; show(0); clearInterval(auto); auto = setInterval(() => { if (cur !== 3) return clearInterval(auto); idx = (idx + 1) % C.length; show(idx); }, 4200); };
+    show(0);
+  })();
+
+  /* 4. 교사 대시보드 목업 */
+  (function () {
+    const rows = [["학생 01", [100, 100, 92, 64, 0]], ["학생 02", [100, 88, 75, 40, 0]], ["학생 03", [100, 100, 100, 100, 100]], ["학생 04", [86, 71, 33, 0, 0]], ["학생 05", [100, 94, 83, 73, 50]]];
+    const cs = ["var(--coral)", "var(--sky)", "var(--sun)", "var(--leaf)", "var(--lilac)"];
+    $("#ptable").innerHTML = `<div class="prow h"><span>학생 (예시)</span><span>1차시</span><span>2차시</span><span>3차시</span><span>4차시</span><span>마무리</span></div>` +
+      rows.map(([n, v], r) => `<div class="prow"><span>${n}</span>${v.map((w, i) => `<div class="pbar"><i style="--w:${w}%;--c:${cs[i]};--k:${r * 5 + i}"></i></div>`).join("")}</div>`).join("");
+  })();
+
+  /* 5. 라이브 차트 2개 (밝은 카드) */
+  (function () {
+    const P = { ink: "#15151a", grid: "#eeeae1", mute: "#5b5b66" };
+    function draw1(y) {
+      const A = axes(Object.assign({ w: 760, h: 300, m: { l: 60, r: 14, t: 44, b: 40 }, x0: 1850, x1: 2025, y0: -0.4, y1: 1.6, xt: [1860, 1900, 1940, 1980, 2020], yt: [0, 0.5, 1, 1.5], yf: v => (v > 0 ? "+" : "") + v.toFixed(1) }, P));
+      const bw = (760 - 74) / 176;
+      let s = A.s, z = A.Y(0);
+      temps.forEach(([x, v]) => { const yy = A.Y(v); s += `<rect x="${A.X(x) - bw / 2}" y="${Math.min(yy, z)}" width="${bw * .8}" height="${Math.max(1, Math.abs(z - yy))}" fill="${tcol(v)}"/>`; });
+      s += `<path d="${path(ma10, A.X, A.Y)}" fill="none" stroke="#15151a" stroke-width="4" stroke-linejoin="round"/>`;
+      s += marker(A.X(y), 40, 260, `📍 ${y}년`, "#ffd23f", "#15151a");
+      $("#c1").innerHTML = s;
+      const v = D.temp[y - 1850], m = (ma10.find(p => p[0] === y) || [0, v])[1];
+      $("#t1k").textContent = y + "년"; $("#t1v").innerHTML = `${sign(v)}<small>℃</small>`; $("#t1v").style.color = v > 0.8 ? "#c42b2b" : "#15151a";
+      $("#t1m").innerHTML = `${sign(m)}<small>℃</small>`;
+    }
+    bindRange("r1", draw1, y => y + "년");
+    const kor = D.kor.map((v, i) => [1900 + i, v]).filter(p => p[1] != null), gbr = D.gbr.map((v, i) => [1900 + i, v]).filter(p => p[1] != null);
+    function draw2(y) {
+      const A = axes(Object.assign({ w: 760, h: 300, m: { l: 50, r: 80, t: 44, b: 40 }, x0: 1900, x1: 2024, y0: 0, y1: 14, xt: [1900, 1940, 1980, 2020], yt: [0, 4, 8, 12], yf: v => v }, P));
+      let s = A.s;
+      s += `<path d="${path(gbr, A.X, A.Y)}" fill="none" stroke="#eb6834" stroke-width="4" stroke-linejoin="round"/>`;
+      s += `<path d="${path(kor, A.X, A.Y)}" fill="none" stroke="#2a78d6" stroke-width="5" stroke-linejoin="round"/>`;
+      const kl = kor[kor.length - 1], gl = gbr[gbr.length - 1];
+      s += `<text x="${A.X(2024) + 10}" y="${A.Y(kl[1]) + 6}" font-size="18" font-weight="900" fill="#2a78d6">한국</text><text x="${A.X(2024) + 10}" y="${A.Y(gl[1]) + 6}" font-size="18" font-weight="900" fill="#eb6834">영국</text>`;
+      s += marker(A.X(y), 40, 260, `📍 ${y}년`, "#ffd23f", "#15151a");
+      const k = kor.find(p => p[0] === y), g = gbr.find(p => p[0] === y);
+      if (k) s += `<circle cx="${A.X(y)}" cy="${A.Y(k[1])}" r="8" fill="#2a78d6" stroke="#fff" stroke-width="3"/>`;
+      if (g) s += `<circle cx="${A.X(y)}" cy="${A.Y(g[1])}" r="8" fill="#eb6834" stroke="#fff" stroke-width="3"/>`;
+      $("#c2").innerHTML = s;
+      $("#t2a").innerHTML = `${k ? k[1].toFixed(2) : "—"}<small>톤</small>`; $("#t2b").innerHTML = `${g ? g[1].toFixed(2) : "—"}<small>톤</small>`;
+    }
+    bindRange("r2", draw2, y => y + "년");
+  })();
+
+  /* 7. 프로젝트 흐름: 차시별 라이브 패널 */
+  (function () {
+    const P = { ink: "#f4f2ec", grid: "#23252e", mute: "#8e909c" };
+    const list = $("#chlist"), panes = [...document.querySelectorAll(".pane")];
+    function pick(i) {
+      list.querySelectorAll(".chl").forEach((b, k) => b.setAttribute("aria-pressed", k === i));
+      panes.forEach((p, k) => p.classList.toggle("on", k === i));
+    }
+    list.addEventListener("click", e => { const b = e.target.closest(".chl"); if (!b) return; e.stopPropagation(); pick(+b.dataset.p); b.blur(); });
+    ON[7] = () => pick(0);
+
+    bindRange("vr1", t => {
+      const A = axes(Object.assign({ w: 980, h: 300, m: { l: 70, r: 20, t: 46, b: 40 }, x0: 0, x1: 4, y0: 0, y1: 32, xt: [0, 1, 2, 3, 4], yt: [0, 10, 20, 30], yf: v => "+" + v + "%" }, P));
+      const pts = []; for (let x = 0; x <= 4.0001; x += 0.1) pts.push([x, (Math.pow(1.07, x) - 1) * 100]);
+      const p = (Math.pow(1.07, t) - 1) * 100;
+      let s = A.s + `<path d="${path(pts, A.X, A.Y)}" fill="none" stroke="#5ec8f2" stroke-width="6"/>`;
+      s += marker(A.X(t), 42, 260, `+${p.toFixed(0)}%`, "#5ec8f2", "#f4f2ec") + `<circle cx="${A.X(t)}" cy="${A.Y(p)}" r="10" fill="#5ec8f2" stroke="#07080c" stroke-width="4"/>`;
+      $("#v1").innerHTML = s;
+    }, t => "+" + t.toFixed(1) + "℃");
+
+    const wpts = D.world.map((v, i) => [D.wy0 + i, v]);
+    bindRange("vr2", y => {
+      const A = axes(Object.assign({ w: 980, h: 260, m: { l: 80, r: 20, t: 46, b: 40 }, x0: 1850, x1: 2024, y0: 0, y1: 400, xt: [1860, 1900, 1940, 1980, 2020], yt: [0, 100, 200, 300, 400], yf: v => v + "억" }, P));
+      const upto = wpts.filter(p => p[0] <= y);
+      let s = A.s + `<path d="${path(wpts, A.X, A.Y)}" fill="none" stroke="#2c2f3a" stroke-width="5"/>`;
+      s += `<path d="${path(upto, A.X, A.Y)}L${A.X(y)},${A.Y(0)}L${A.X(1850)},${A.Y(0)}Z" fill="#5ec8f2" opacity=".18"/><path d="${path(upto, A.X, A.Y)}" fill="none" stroke="#5ec8f2" stroke-width="5"/>`;
+      s += marker(A.X(y), 42, 220, `${y}년`, "#5ec8f2", "#f4f2ec");
+      $("#v2").innerHTML = s;
+      const v = D.world[y - D.wy0];
+      $("#v2k").textContent = y + "년 세계 배출량"; $("#v2v").textContent = Math.round(v) + "억 톤"; $("#v2x").textContent = (v / D.world[0]).toFixed(0) + "배";
+    }, y => y + "년");
+
+    const SR = [["극심한 폭염을 겪는 세계 인구", [14, 37], ["14%", "37%"], 40], ["사라지는 산호초", [80, 99], ["70~90%", "99% 이상"], 100], ["서식지 절반을 잃는 곤충 종", [6, 18], ["6%", "18%"], 20]];
+    bindRange("vr3", t => {
+      const i = t >= 2 ? 1 : 0;
+      $("#v3").innerHTML = SR.map(([l, v, f, mx]) => `<div class="mbar"><span class="l">${l}</span><div class="tr"><i style="width:${Math.max(14, v[i] / mx * 100)}%;background:${i ? "var(--coral)" : "var(--sun)"}">${f[i]}</i></div></div>`).join("");
+    }, t => t.toFixed(1) + "℃");
+
+    const S1 = [1.1, 1.5, 1.6, 1.4], S5 = [1.1, 1.6, 2.4, 4.4], YS = [2015, 2030, 2050, 2090];
+    const at = (s, y) => { for (let i = 0; i < 3; i++) if (y <= YS[i + 1]) return s[i] + (s[i + 1] - s[i]) * (y - YS[i]) / (YS[i + 1] - YS[i]); return s[3]; };
+    bindRange("vr4", y => {
+      const A = axes(Object.assign({ w: 980, h: 260, m: { l: 70, r: 20, t: 46, b: 40 }, x0: 2015, x1: 2090, y0: 1, y1: 4.6, xt: [2020, 2040, 2060, 2080], yt: [1, 2, 3, 4], yf: v => "+" + v + "℃" }, P));
+      const ln = s => { const o = []; for (let x = 2015; x <= 2090; x++) o.push([x, at(s, x)]); return o; };
+      let s = A.s + `<line x1="${A.X(2015)}" x2="${A.X(2090)}" y1="${A.Y(1.5)}" y2="${A.Y(1.5)}" stroke="#ff5a4f" stroke-width="2.5" stroke-dasharray="8 6"/><text x="${A.X(2090) - 4}" y="${A.Y(1.5) - 10}" text-anchor="end" font-size="17" font-weight="900" fill="#ff8a65">1.5℃</text>`;
+      s += `<path d="${path(ln(S5), A.X, A.Y)}" fill="none" stroke="#ff8a65" stroke-width="5"/><path d="${path(ln(S1), A.X, A.Y)}" fill="none" stroke="#7bd389" stroke-width="5"/>`;
+      s += marker(A.X(y), 42, 220, `${y}년`, "#7bd389", "#f4f2ec");
+      $("#v4").innerHTML = s;
+      $("#v4a").textContent = "+" + at(S1, y).toFixed(1) + "℃"; $("#v4b").textContent = "+" + at(S5, y).toFixed(1) + "℃";
+    }, y => y + "년");
+  })();
+
+  const start = parseInt((location.hash || "").slice(1), 10);
+  go(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body></html>
