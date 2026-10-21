@@ -40,6 +40,18 @@ st.markdown(
     .essay {border-radius:18px;border:2.5px solid #15151a;box-shadow:5px 5px 0 #15151a;padding:18px 20px;margin-bottom:16px;background:#fff;}
     .essay h4 {margin:0 0 10px;font-size:19px;}
     .essay .col {border:2px solid #15151a;border-radius:14px;padding:12px 14px;white-space:pre-wrap;line-height:1.75;font-size:15.5px;height:100%;}
+    .pg {background:#fff;border:2.5px solid #15151a;border-radius:20px;box-shadow:5px 5px 0 #15151a;overflow:hidden;margin-bottom:8px;}
+    .pg-row {display:grid;grid-template-columns:minmax(90px,1.1fr) repeat(5,minmax(70px,1fr)) 82px;gap:14px;align-items:center;padding:11px 18px;border-top:1.5px solid #eee8dc;}
+    .pg-head {background:#fbf0d4;border-top:0;font-weight:800;font-size:14px;color:#4a4a55;}
+    .pg-h {display:flex;align-items:center;gap:6px;} .pg-h i {width:10px;height:10px;border-radius:50%;border:1.5px solid #15151a;display:inline-block;}
+    .pg-name {font-weight:900;font-size:15.5px;white-space:nowrap;}
+    .pg-c {display:grid;gap:3px;}
+    .pg-bar {height:12px;border-radius:999px;background:#efebe3;overflow:hidden;}
+    .pg-bar i {display:block;height:100%;border-radius:999px;}
+    .pg-v {font-size:12px;font-weight:800;color:#6b6b76;}
+    .pg-t {font-weight:900;font-size:16px;text-align:right;line-height:1.2;} .pg-t small {display:block;font-weight:700;font-size:11.5px;color:#8a8a95;}
+    .pg-head .pg-t {font-size:14px;}
+    @media (max-width:760px){.pg-row{grid-template-columns:80px repeat(5,1fr) 56px;gap:8px;padding:10px 12px}.pg-t small{display:none}}
     .stTabs [data-baseweb="tab-list"] {gap:6px;flex-wrap:wrap;}
     .stTabs [data-baseweb="tab"] {border:2px solid #15151a;border-radius:999px;padding:6px 14px;background:#fff;height:auto;}
     .stTabs [aria-selected="true"] {background:#ffd23f;}
@@ -144,20 +156,24 @@ tabs = st.tabs(["📊 진행 현황", "🗂️ 문항별 모아보기", "✍️ 
 
 # ---------------- 진행 현황 ----------------
 with tabs[0]:
-    rows = []
+    # 차시마다 학습지와 같은 색 막대로 보여 줘요 (빈 칸은 연한 회색)
+    def short_name(c):
+        return "마무리" if c["id"] == "end" else f"{c['no']}차시"
+
+    head = "".join(f'<div class="pg-h" title="{html.escape(c["title"])}"><i style="background:{c["color"]}"></i>{short_name(c)}</div>' for c in CHAPTERS)
+    body = ""
     for sid, r in students:
-        row = {"번호": r.get("number"), "이름": r.get("name")}
+        subs = r.get("submitted") or {}
+        cells = ""
         for c in CHAPTERS:
-            row[f"{c['no']}. {c['title']}"] = round(progress(r, c["id"]) * 100)
-        row["제출한 챕터"] = " ".join(f"{c['no']}" for c in CHAPTERS if c["id"] in (r.get("submitted") or {})) or "-"
-        row["마지막 저장"] = when(r.get("updated_at", ""))
-        rows.append(row)
-    df = pd.DataFrame(rows)
-    st.dataframe(
-        df, hide_index=True, width="stretch",
-        column_config={f"{c['no']}. {c['title']}": st.column_config.ProgressColumn(f"{c['no']}. {c['title']}", min_value=0, max_value=100, format="%d%%") for c in CHAPTERS},
-    )
-    st.caption("막대는 문항 작성률이에요. '제출한 챕터'는 학생이 '선생님께 제출하기'를 누른 챕터예요. 챕터를 옮길 때도 자동으로 임시 저장돼요.")
+            p = round(progress(r, c["id"]) * 100)
+            mark = "✅" if c["id"] in subs else ""
+            cells += (f'<div class="pg-c" title="{html.escape(c["title"])} · {p}%"><div class="pg-bar"><i style="width:{p}%;background:{c["color"]}"></i></div>'
+                      f'<span class="pg-v">{p}%{mark}</span></div>')
+        total = round(sum(progress(r, c["id"]) for c in CHAPTERS) / len(CHAPTERS) * 100)
+        body += f'<div class="pg-row"><div class="pg-name">{names[sid]}</div>{cells}<div class="pg-t">{total}%<small>{when(r.get("updated_at", ""))}</small></div></div>'
+    st.markdown(f"""<div class="pg"><div class="pg-row pg-head"><div class="pg-name">학생</div>{head}<div class="pg-t">전체</div></div>{body}</div>""", unsafe_allow_html=True)
+    st.caption("막대는 차시별 문항 작성률이에요. ✅는 학생이 '선생님께 제출하기'를 누른 차시예요. 오른쪽은 전체 작성률과 마지막 저장 시각이에요. 챕터를 옮길 때도 자동으로 임시 저장돼요.")
 
 # ---------------- 문항별 ----------------
 with tabs[1]:
