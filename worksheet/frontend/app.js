@@ -118,7 +118,8 @@
       return `<div class="q" data-qid="${id}">
         <div class="q-title"><span class="qi">Q</span><span>${o.label || esc(label(id))}</span></div>
         ${o.hint ? `<div class="q-hint">${o.hint}</div>` : ""}
-        <textarea data-q="${id}" rows="${o.rows || 4}" placeholder="${esc(o.ph || "내 생각을 자유롭게 적어 보세요.")}"></textarea>
+        ${window.resHTML ? resHTML(o.res || id) : ""}
+        <textarea data-q="${id}" placeholder="${esc(o.ph || "내 생각을 자유롭게 적어 보세요.")}"></textarea>
         <div class="q-foot"><span>${o.foot || ""}</span><span class="count" data-count="${id}">0자</span></div>
       </div>`;
     },
@@ -126,6 +127,7 @@
       return `<div class="q" data-qid="${id}">
         <div class="q-title"><span class="qi">Q</span><span>${o.label || esc(label(id))}</span></div>
         ${o.hint ? `<div class="q-hint">${o.hint}</div>` : ""}
+        ${window.resHTML ? resHTML(o.res || id) : ""}
         <input type="text" data-q="${id}" placeholder="${esc(o.ph || "")}" ${o.ans ? `data-ans="${esc(o.ans)}"` : ""}/>
         ${o.ans || o.check ? `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn small" data-check="${id}">정답 확인</button><div class="feedback" data-fb="${id}"></div></div>` : ""}
       </div>`;
@@ -136,6 +138,7 @@
       const html = tpl.replace(/\{(\d)\}/g, (_, n) => `<input type="text" data-q="${id}" data-i="${n}" data-ans="${esc(answers[n])}" aria-label="빈칸 ${+n + 1}" ${o.anyOrder ? 'data-any="1"' : ""}/>`);
       return `<div class="q" data-qid="${id}">
         ${o.title ? `<div class="q-title"><span class="qi">Q</span><span>${o.title}</span></div>` : ""}
+        ${window.resHTML ? resHTML(o.res || id) : ""}
         <div class="blank-line">${html}</div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn small" data-check="${id}">정답 확인</button><div class="feedback" data-fb="${id}"></div></div>
       </div>`;
@@ -144,6 +147,7 @@
       return `<div class="q" data-qid="${id}">
         <div class="q-title"><span class="qi">Q</span><span>${o.label || esc(label(id))}</span></div>
         ${o.hint ? `<div class="q-hint">${o.hint}</div>` : ""}
+        ${window.resHTML ? resHTML(o.res || id) : ""}
         <div class="inline-list" style="${o.cols ? `grid-template-columns:repeat(${o.cols},1fr)` : ""}">${labels.map((l, n) =>
           `<label>${esc(l)}${o.area ? `<textarea data-q="${id}" data-i="${n}" rows="2" style="min-height:70px"></textarea>` : `<input type="text" data-q="${id}" data-i="${n}"/>`}</label>`).join("")}</div>
         ${o.check ? `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn small" data-check="${id}">데이터와 비교하기</button><div class="feedback" data-fb="${id}"></div></div>` : ""}
@@ -152,6 +156,7 @@
     choice(id, opts, o = {}) {
       return `<div class="q" data-qid="${id}">
         <div class="q-title"><span class="qi">Q</span><span>${o.label || esc(label(id))}</span></div>
+        ${window.resHTML ? resHTML(o.res || id) : ""}
         <div class="choices" data-choice="${id}" ${o.multi ? 'data-multi="1"' : ""}>${opts.map(v => `<button type="button" class="choice" aria-pressed="false" data-v="${esc(v)}">${esc(v)}</button>`).join("")}</div>
         <div class="feedback" data-fb="${id}"></div>
       </div>`;

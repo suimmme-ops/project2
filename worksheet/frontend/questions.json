@@ -17,7 +17,7 @@
 
     {"id": "s1_year", "ch": "ch2", "type": "short", "label": "[STEP1] 지구의 기온이 급격하게 상승하기 시작한 시기 (약 ○○○○년경)"},
     {"id": "s1_life", "ch": "ch2", "type": "long", "label": "[STEP1] 이 시기 사람들의 생활과 생산 방식의 변화"},
-    {"id": "s1_word", "ch": "ch2", "type": "short", "label": "[STEP1] 석탄·석유를 많이 쓰며 공장이 늘어난 사회의 큰 변화"},
+    {"id": "s1_word", "ch": "ch2", "type": "short", "label": "[STEP1] 기온·CO₂ 그래프가 함께 오르기 시작한 까닭(사회 변화 · 늘어난 기체)"},
     {"id": "s2_blanket", "ch": "ch2", "type": "short", "label": "[STEP2] 온실가스는 지구를 덮어 주는 ○○ 같은 역할"},
     {"id": "s2_effect", "ch": "ch2", "type": "short", "label": "[STEP2] 지구의 온도를 알맞게 유지해 주는 작용의 이름"},
     {"id": "s2_nogas", "ch": "ch2", "type": "long", "label": "[STEP2] 온실가스가 전혀 없다면 지구는 어떻게 될까요?"},
@@ -26,7 +26,7 @@
     {"id": "s2_why", "ch": "ch2", "type": "long", "label": "[STEP2] 이산화탄소가 많아질수록 지구가 더워지는 이유"},
     {"id": "s3_kor", "ch": "ch2", "type": "short", "label": "[STEP3] 2024년 대한민국 1인당 CO₂ 배출량(톤)"},
     {"id": "s3_gbr", "ch": "ch2", "type": "short", "label": "[STEP3] 2024년 영국 1인당 CO₂ 배출량(톤)"},
-    {"id": "s3_top3", "ch": "ch2", "type": "list", "label": "[STEP3] 대한민국보다 1인당 배출량이 많은 나라 3개"},
+    {"id": "s3_top3", "ch": "ch2", "type": "list", "label": "[STEP3] 2024년 기준, 대한민국보다 1인당 배출량이 많은 나라 3개"},
     {"id": "s3_think", "ch": "ch2", "type": "long", "label": "[STEP3] 영국은 줄고 한국은 늘어난 그래프를 보고 든 생각과 까닭"},
     {"id": "s4_top3", "ch": "ch2", "type": "list", "label": "[STEP4] 2020년 CO₂를 가장 많이 배출한 나라 1·2·3위"},
     {"id": "s4_korrank", "ch": "ch2", "type": "short", "label": "[STEP4] 대한민국의 배출량 순위"},
@@ -54,8 +54,8 @@
     {"id": "c4_fruit", "ch": "ch4", "type": "long", "label": "사과·배·복숭아를 점점 재배하기 어려워지는 이유"},
     {"id": "c4_fruit2", "ch": "ch4", "type": "short", "label": "미래 과일 지도에서 사라질 수도 있는 다른 과일"},
     {"id": "c4_sea", "ch": "ch4", "type": "short", "label": "남극·북극의 얼음이 녹으면 높아지는 것"},
-    {"id": "c4_place", "ch": "ch4", "type": "short", "label": "침수 예측 지도: 내가 살펴본 장소"},
-    {"id": "c4_change", "ch": "ch4", "type": "long", "label": "침수 예측 지도: 그 장소의 변화 모습"},
+    {"id": "c4_place", "ch": "ch4", "type": "short", "label": "침수 예측 지도: 2050년 물에 잠길 위험이 있는 장소"},
+    {"id": "c4_change", "ch": "ch4", "type": "long", "label": "해수면 상승: 그 장소가 잠기는 모습과 생활의 변화"},
     {"id": "c4_choice", "ch": "ch4", "type": "long", "featured": true, "label": "우리가 만들고 싶은 2050년과 그것을 위해 지금 할 일"},
 
     {"id": "e_learned", "ch": "end", "type": "long", "label": "오늘 활동을 통해 새롭게 알게 된 점"},

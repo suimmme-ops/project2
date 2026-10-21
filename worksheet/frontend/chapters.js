@@ -39,8 +39,8 @@
   const CASES = [
     { e: "🌊", where: "PAKISTAN · 2022", t: "물에 잠긴 나라", body: "2022년 여름, 평소보다 훨씬 많은 비(몬순 폭우)가 쏟아져 <b>국토의 약 3분의 1</b>이 물에 잠겼어요. 약 <b>3,300만 명</b>이 집과 농경지를 잃는 등 피해를 입었어요.", src: "NASA Earth Observatory(2022), UN OCHA(2022)" },
     { e: "🥵", where: "EUROPE · 2022", t: "더위가 생명을 위협할 때", body: "2022년 여름 유럽에는 기록적인 폭염이 이어졌어요. 연구에 따르면 이 여름 더위와 관련해 <b>6만 명이 넘는 사람</b>이 목숨을 잃었어요. 특히 어르신과 어린이가 위험했어요.", src: "Ballester 외(2023), Nature Medicine" },
-    { e: "🔥", where: "CANADA · 2023", t: "역대 최악의 산불", body: "2023년 캐나다에서는 산불로 약 <b>1,800만 헥타르</b>의 숲이 탔어요. 이는 <b>우리나라 전체 면적의 약 1.8배</b>예요. 연기는 바다 건너 미국과 유럽까지 날아갔어요.", src: "Canadian Interagency Forest Fire Centre(2023)" },
-    { e: "🇰🇷", where: "KOREA · 2024", t: "가장 더웠던 여름", body: "2024년 우리나라 여름 평균기온은 <b>25.6℃</b>로 기상 관측 이래 가장 높았어요. 밤에도 25℃ 아래로 내려가지 않는 <b>열대야가 평균 20.2일</b>로 역대 가장 많았어요.", src: "기상청, 2024년 여름철 기후 분석(2024)" },
+    { e: "🔥", where: "CANADA · 2023", t: "역대 최악의 산불", body: "2023년 캐나다에서는 산불로 약 <b>1,500만 헥타르</b>의 숲이 탔어요. 이는 <b>우리나라 전체 면적의 약 1.5배</b>예요. 연기는 국경을 넘어 미국 뉴욕 하늘까지 주황빛으로 물들였어요.", src: "캐나다 천연자원부·연구진 분석(2024), 연합뉴스(2024.08.21)" },
+    { e: "KR", where: "KOREA · 2024–2025", t: "기록을 또 깬 여름", body: "2024년 우리나라 여름 평균기온은 <b>25.6℃</b>로 기상 관측(1973년) 이래 가장 높았어요. 그런데 바로 다음 해인 <b>2025년 여름(25.7℃)</b>이 그 기록을 또 깼어요. 2024년 서울에서는 밤에도 25℃ 아래로 내려가지 않는 <b>열대야가 39일</b>이나 이어졌어요.", src: "기상청 2024년 여름철 기후 분석(2024.09), 2025년 여름철 기후 특성(2025.09)" },
   ];
 
   const ch1 = {
@@ -51,7 +51,7 @@
       ${step("1-1", "기후 재난의 원인 파악하기", "카드를 눌러 실제로 일어난 기후 재난을 읽어 보세요.")}
       <div class="card">
         <div class="case-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
-          ${CASES.map((c, i) => `<button class="case" data-case="${i}" aria-pressed="${i === 0}"><span class="emoji">${c.e}</span><span class="where">${c.where}</span><h4>${c.t}</h4></button>`).join("")}
+          ${CASES.map((c, i) => `<button class="case" data-case="${i}" aria-pressed="${i === 0}"><span class="emoji">${c.e === "KR" ? flagKR(30) : c.e}</span><span class="where">${c.where}</span><h4>${c.t}</h4></button>`).join("")}
         </div>
         <div class="case-detail reading card flat paper" id="caseDetail"></div>
       </div>
@@ -82,17 +82,18 @@
           <div class="viz-head"><div><span class="tag concept">개념 모형</span><h3 style="margin-top:6px">🏝️ 바다가 높아지면 투발루는?</h3>
           <p class="desc">투발루는 평균 높이가 바다보다 약 2m밖에 높지 않은 섬나라예요. 바닷물 높이를 올려 보세요.</p></div></div>
           <div class="scene" id="tuvalu"></div>
-          <div class="controls row">
+          <div class="controls row even">
             ${rangeHTML("rise", "🌊 해수면 상승", 0, 150, 5, 30)}
-            <div class="ctrl"><div class="ctrl-label"><span>🌕 킹 타이드(1년 중 가장 높은 밀물)</span></div>
-              <div class="seg" id="tide"><button data-v="0" aria-pressed="true">평소</button><button data-v="1" aria-pressed="false">킹 타이드</button></div></div>
+            <div class="ctrl"><div class="ctrl-label"><span>🌕 밀물 높이</span><output id="tideOut">평소</output></div>
+              <div class="seg" id="tide"><button data-v="0" aria-pressed="true">평소</button><button data-v="1" aria-pressed="false">킹 타이드</button></div>
+              <div class="ticks"><span>킹 타이드 = 1년 중 가장 높은 밀물(약 +0.9m)</span></div></div>
           </div>
           <p class="src">실제 지형이 아닌 이해를 돕는 개념 모형이에요. 투발루 평균 해발고도 약 2m, 가장 높은 곳 약 4.6m. 출처: 투발루 정부, NASA 해수면 변화 팀(2023).</p>
         </div>
         <div class="span-5 stack" style="gap:16px">
           <div class="card reading"><h3>🏝️ 투발루</h3><p>남태평양의 작은 섬나라 투발루는 바닷물이 높아지며 땅이 조금씩 잠기고, 바닷물이 땅속으로 스며들어 <b>마실 물과 농사지을 땅</b>이 줄고 있어요. 2023년에는 호주와 조약을 맺어 해마다 주민 일부가 호주로 옮겨 살 수 있게 되었어요.</p></div>
           <div class="card reading"><h3>🐻‍❄️ 북극곰</h3><p>북극곰은 <b>바다 얼음 위에서 물범을 사냥</b>해요. 9월의 북극 바다 얼음 면적은 1979년 이후 <b>10년마다 약 12%씩</b> 줄고 있어요. 얼음이 없는 기간이 길어지면 북극곰은 굶주리게 돼요.</p><p class="src">출처: 미국 국립빙설자료센터(NSIDC)</p></div>
-          <div class="card reading"><h3>🐝 꿀벌</h3><p>겨울이 따뜻해지면 꿀벌이 너무 일찍 깨어나 밖으로 나갔다가 갑작스러운 추위에 돌아오지 못해요. 꽃이 피는 시기도 어긋나요. 2022년 초 우리나라에서는 약 <b>78억 마리</b>의 꿀벌이 사라졌다고 추정돼요.</p><p class="src">출처: 한국양봉협회 추산(2022), 농촌진흥청</p></div>
+          <div class="card reading"><h3>🐝 꿀벌</h3><p>2022년 초 우리나라에서는 약 <b>78억 마리</b>의 꿀벌이 사라졌다고 추정돼요. 원인은 한 가지가 아니에요. <b>응애 같은 해충</b>, 꿀을 얻을 <b>꽃(밀원)이 줄어든 것</b>, 그리고 <b>이상 기온</b>이 함께 영향을 주었어요. 겨울이 따뜻하면 꿀벌이 일찍 깨어나 밖으로 나갔다가 갑작스러운 추위에 돌아오지 못하고, 꽃 피는 시기도 어긋나요.</p><p class="src">출처: 한국양봉협회 추산(2022), 농촌진흥청·농림축산식품부 원인 분석(2022)</p></div>
         </div>
       </div>
       <div class="bento">
@@ -107,7 +108,7 @@
       const showCase = i => {
         const c = CASES[i];
         $$(".case", v).forEach(b => b.setAttribute("aria-pressed", +b.dataset.case === i));
-        det.innerHTML = `<h3>${c.e} ${c.t}</h3><p>${c.body}</p><p class="src">출처: ${c.src}</p>`;
+        det.innerHTML = `<h3>${c.e === "KR" ? flagKR(20) : c.e} ${c.t}</h3><p>${c.body}</p><p class="src">출처: ${c.src}</p>${resHTML("case" + i, "더 알아보기 · 뉴스와 영상으로 이 재난을 더 자세히 살펴봐요")}`;
       };
       $$(".case", v).forEach(b => b.addEventListener("click", () => showCase(+b.dataset.case)));
       showCase(0);
@@ -128,7 +129,7 @@
       let tide = 0, rise = 30;
       const draw = () => drawTuvalu($("#tuvalu", v), rise / 100 + (tide ? 0.9 : 0));
       bindRange($("#rise", v), x => { rise = x; draw(); }, x => "+" + x + "cm");
-      seg($("#tide", v), x => { tide = +x; draw(); });
+      seg($("#tide", v), x => { tide = +x; $("#tideOut", v).textContent = tide ? "+0.9m" : "평소"; draw(); });
     },
   };
 
@@ -203,7 +204,7 @@
         <div class="span-5">${UI.short("s1_year", { label: "그래프 분석: 지구의 기온이 급격하게 상승하기 시작한 시기는 언제쯤인가요? (약 ○○○○년경부터)", hint: "📍 위의 슬라이더로 표시해 보면 자동으로 적혀요. 직접 고쳐 써도 돼요.", ph: "예) 1970" })}</div>
         <div class="span-7">${UI.long("s1_life", { label: "이 시기 사람들의 생활과 생산 방식에 어떤 큰 변화가 있었을지 생각하여 정리해 봅시다.", hint: "🔍 검색 예시) <b>0000년대 생산 방식</b>, 0000년대 생활 모습" })}</div>
       </div>
-      ${UI.blanks("s1_word", "석탄과 석유를 많이 사용하며 공장이 늘어나고, 기계로 대량 생산을 하게 된 사회의 큰 변화를 {0}(이)라고 해요.", ["산업화|산업혁명|공업화"], { title: "사회의 큰 변화를 무엇이라고 할까요?" })}
+      ${UI.blanks("s1_word", "위의 두 그래프를 보면 기온과 CO₂ 배출량이 비슷한 시기에 함께 가파르게 올라가요. 석탄·석유를 태워 기계를 돌리고, 공장에서 물건을 대량으로 만들게 된 사회의 큰 변화를 {0}(이)라고 해요. 이 변화 이후 사람들이 내뿜는 {1}이(가) 크게 늘어났어요.", ["산업혁명|산업화|공업화", "이산화탄소|co2|co₂|탄소|온실가스"], { title: "STEP 1 정리: 기온과 CO₂ 그래프가 함께 올라가기 시작한 까닭은 무엇일까요?" })}
 
       ${step("STEP 2", "지구는 왜 뜨거워지고 있을까?", "온실가스 담요 모형을 움직여 보고, 세 가지 자료를 읽으며 정리해 봅시다.")}
       <div class="bento">
@@ -211,19 +212,26 @@
           <div class="viz-head"><div><span class="tag concept">개념 모형</span><h3 style="margin-top:6px">🧣 온실가스 담요 실험실</h3><p class="desc">슬라이더로 온실가스 담요를 두껍게 만들어 보세요. 빠져나가는 열과 다시 돌아오는 열을 살펴봐요.</p></div></div>
           <div class="scene" id="greenhouse"></div>
           <div class="controls">${rangeHTML("ghg", "🧣 온실가스 담요의 두께", 0, 4, 1, 1)}</div>
-          <p class="src">온실가스가 없을 때 약 −18℃, 산업화 이전 약 14℃는 교과서·NASA 등에서 널리 쓰는 값이고, 미래 값은 IPCC AR6(2021) 시나리오별 2100년 무렵 상승폭을 더한 어림값이에요.</p>
+          <p class="src">온실가스가 없을 때 '평균' 약 −18℃(낮과 밤의 차이가 아주 커짐), 산업화 이전 약 14℃는 교과서·NASA 등에서 널리 쓰는 값이고, 미래 값은 IPCC AR6(2021) 시나리오별 2100년 무렵 상승폭을 더한 어림값이에요.</p>
         </div>
         <div class="card span-5 reading tint">
           <h3>📖 자료 1 · 지구의 담요, 온실가스</h3>
           <p>태양의 빛은 지구를 데워요. 데워진 지구는 열을 우주로 내보내는데, 공기 속 <b>온실가스</b>가 이 열의 일부를 붙잡아 다시 지구로 돌려보내요. 마치 <b>담요</b>처럼요!</p>
-          <p>이 작용 덕분에 지구는 생물이 살기 알맞은 온도를 유지해요. 이것을 <b>온실효과</b>라고 해요.</p>
+          <p>이 작용 덕분에 지구는 생물이 살기 알맞은 온도를 유지해요. 이것을 <b>온실효과</b>라고 해요. 햇볕 아래 세워 둔 <b>자동차 안</b>이 창문을 닫으면 점점 더워지는 것과 비슷해요.</p>
+          <div class="facts">
+            <div class="fact"><b>🫧 CO₂ · 메테인</b><span>대표적인 온실가스. 수증기, 아산화질소도 온실가스예요.</span></div>
+            <div class="fact"><b>280 → 420ppm</b><span>공기 속 CO₂ 농도: 산업화 이전 → 지금(약 1.5배)</span></div>
+            <div class="fact"><b>약 15℃</b><span>온실효과 덕분에 지켜지는 지구의 평균 기온</span></div>
+          </div>
+          <p class="src">출처: NOAA 전 지구 CO₂ 관측(2024 연평균 약 423ppm), 기상청 기후정보포털</p>
+          ${resHTML("read_greenhouse", "더 알아보기 · 영상으로 온실효과 원리를 살펴봐요")}
         </div>
       </div>
       <div class="bento">
         <div class="span-6">${UI.blanks("s2_blanket", "(1) 온실가스는 지구를 덮어 주는 {0} 같은 역할을 합니다.", ["담요|이불"], { title: "자료 1을 읽고 빈칸을 채워 봅시다." })}</div>
         <div class="span-6">${UI.blanks("s2_effect", "(2) 열이 모두 빠져나가지 않도록 도와 지구의 온도를 알맞게 유지해 주는 작용을 {0}(이)라고 합니다.", ["온실효과|온실 효과"], { title: "이 작용의 이름은?" })}</div>
       </div>
-      ${UI.long("s2_nogas", { label: "(3) 만약 온실가스가 전혀 없다면 지구는 어떻게 될까요?", hint: "🧣 위 실험실의 슬라이더를 맨 왼쪽(0)으로 옮겨 보세요." })}
+      ${UI.long("s2_nogas", { label: "(3) 만약 온실가스가 전혀 없다면 지구는 어떻게 될까요?", hint: "🧣 위 실험실의 슬라이더를 맨 왼쪽(0)으로 옮겨 보세요. −18℃는 '평균'이에요. 담요가 없으면 낮과 밤에는 각각 어떻게 될지도 생각해 보세요. (힌트: 대기가 거의 없는 달)" })}
 
       <div class="card viz">
         <div class="viz-head"><div><span class="tag data">실제 데이터</span><h3 style="margin-top:6px">⛽ 자료 2 · 무엇을 태워서 CO₂가 나왔을까?</h3>
@@ -265,7 +273,7 @@
         <div class="span-6">${UI.short("s3_kor", { label: `(1) ${d.ctry.latest}년 기준, 대한민국의 1인당 배출량은 약 몇 톤인가요?`, ph: "예) 0.0", check: true })}</div>
         <div class="span-6">${UI.short("s3_gbr", { label: `(1) ${d.ctry.latest}년 기준, 영국의 1인당 배출량은 약 몇 톤인가요?`, ph: "예) 0.0", check: true })}</div>
       </div>
-      ${UI.list("s3_top3", ["나라 ①", "나라 ②", "나라 ③"], { label: "(2) 대한민국의 1인당 CO₂ 배출량보다 더 많은 양을 배출하고 있는 나라 3개를 찾아 적어 보세요.", check: true })}
+      ${UI.list("s3_top3", ["나라 ①", "나라 ②", "나라 ③"], { label: `(2) ${d.ctry.latest}년 기준, 대한민국의 1인당 CO₂ 배출량보다 더 많은 양을 배출하고 있는 나라 3개를 찾아 적어 보세요.`, hint: `📍 위 순위 그래프의 연도를 <b>${d.ctry.latest}년</b>에 두고, 대한민국보다 위에 있는 나라를 찾아보세요.`, check: true })}
       ${UI.long("s3_think", { label: "(3) 그래프를 보면 영국은 1인당 CO₂ 배출량이 줄어드는 모습이고, 대한민국은 과거보다 크게 늘어난 모습입니다. 이 데이터를 보고 어떤 생각이 들었나요? 까닭과 함께 써 봅시다." })}
 
       ${step("STEP 4", "누가 누가 더 많이 내뿜을까?", "나라 전체의 배출량 순위와, 배출량을 줄인 나라를 데이터로 찾아봅시다.")}
@@ -385,7 +393,7 @@
         if (ki >= 30) rows = rows.slice(0, 29).concat(all[ki]);
         rkChart.update({
           aria: `${rkYear}년 1인당 CO2 배출량 순위`,
-          rows: rows.map(o => ({ label: (o.iso === "KOR" ? "🇰🇷 " : "") + nameOf(o.iso) + (ki >= 30 && o.iso === "KOR" ? ` (${ki + 1}위)` : ""), value: o.v, color: o.iso === "KOR" ? "#e34948" : "#2a78d6", highlight: o.iso === "KOR" })),
+          rows: rows.map(o => ({ label: nameOf(o.iso) + (ki >= 30 && o.iso === "KOR" ? ` (${ki + 1}위)` : ""), flag: o.iso === "KOR" ? "KR" : "", value: o.v, color: o.iso === "KOR" ? "#e34948" : "#2a78d6", highlight: o.iso === "KOR" })),
         });
       }
       bindRange($("#rkYear", v), y => { rkYear = y; redrawRK(); }, y => y + "년");
@@ -416,8 +424,8 @@
         const wt = d.world.total[d.world.years.indexOf(y)] * 100;
         let rows = all.slice(0, 10);
         if (ki >= 10) rows = rows.concat(all[ki]);
-        totChart.update({ aria: `${y}년 CO2 총배출량 순위`, rows: rows.map(o => ({ label: (o.iso === "KOR" ? `🇰🇷 ` : "") + nameOf(o.iso) + (o.iso === "KOR" && ki >= 10 ? ` (${ki + 1}위)` : ""), value: o.v, share: (o.v / wt * 100).toFixed(1), color: o.iso === "KOR" ? "#e34948" : "#52514e", highlight: o.iso === "KOR" })) });
-        $("#korRankPill", v).textContent = `🇰🇷 ${y}년 대한민국: ${ki + 1}위`;
+        totChart.update({ aria: `${y}년 CO2 총배출량 순위`, rows: rows.map(o => ({ label: nameOf(o.iso) + (o.iso === "KOR" && ki >= 10 ? ` (${ki + 1}위)` : ""), flag: o.iso === "KOR" ? "KR" : "", value: o.v, share: (o.v / wt * 100).toFixed(1), color: o.iso === "KOR" ? "#e34948" : "#52514e", highlight: o.iso === "KOR" })) });
+        $("#korRankPill", v).innerHTML = `${flagKR(16)} ${y}년 대한민국: ${ki + 1}위`;
       }, y => y + "년");
 
       let chA = 2010, chB = 2023, chMode = "abs", chDir = "down";
@@ -429,7 +437,7 @@
       }
       function redrawCH() {
         const list = changes(chA, chB, chMode).sort((p, q) => chDir === "down" ? p.v - q.v : q.v - p.v).slice(0, 10);
-        chChart.update({ aria: `${chA}년에서 ${chB}년 사이 배출량 변화`, rows: list.map(o => ({ label: (o.iso === "KOR" ? "🇰🇷 " : "") + nameOf(o.iso), value: o.v, a: o.a, b: o.b, color: o.v < 0 ? "#2a78d6" : "#e34948", highlight: o.iso === "KOR" })) });
+        chChart.update({ aria: `${chA}년에서 ${chB}년 사이 배출량 변화`, rows: list.map(o => ({ label: nameOf(o.iso), flag: o.iso === "KOR" ? "KR" : "", value: o.v, a: o.a, b: o.b, color: o.v < 0 ? "#2a78d6" : "#e34948", highlight: o.iso === "KOR" })) });
       }
       bindDual($("#chRange", v), (a, b) => { chA = a; chB = b; redrawCH(); }, 1);
       seg($("#chMode", v), x => { chMode = x; redrawCH(); });
@@ -461,7 +469,7 @@
 
   function drawGreenhouse(el, lv) {
     const T = [-18, 14, 15, 17, 18][lv];
-    const names = ["온실가스가 없어요", "산업화 이전", "지금", "온실가스가 더 많아지면 (2100년 중간 배출)", "온실가스가 아주 많아지면 (2100년 매우 높은 배출)"];
+    const names = ["온실가스가 없어요 (평균 −18℃, 낮·밤 차이가 아주 큼)", "산업화 이전", "지금", "온실가스가 더 많아지면 (2100년 중간 배출)", "온실가스가 아주 많아지면 (2100년 매우 높은 배출)"];
     const back = [0, 2, 3, 4, 5][lv], out = 6 - back;
     const earth = ["#dfeefe", "#3fa66b", "#58a65a", "#c2a03b", "#d9772e"][lv];
     const W = 800, H = 360, cx = 330, cy = 460, R = 230;
@@ -490,7 +498,7 @@
       ${Array.from({ length: 28 }, (_, i) => `<circle cx="${(i * 137) % W}" cy="${(i * 61) % 170}" r="${i % 3 ? 1.2 : 2}" fill="#fff" opacity=".7"/>`).join("")}
       <circle cx="${cx}" cy="${cy}" r="${atmR}" fill="#9fb7ff" opacity="${0.06 + lv * 0.09}" stroke="#b9a6f5" stroke-width="${lv ? 3 + lv * 2.5 : 0}" stroke-dasharray="${lv ? "2 8" : "0"}"/>
       <circle cx="${cx}" cy="${cy}" r="${R}" fill="${earth}" stroke="#15151a" stroke-width="4"/>
-      ${lv === 0 ? `<text x="${cx}" y="${cy - R + 70}" text-anchor="middle" font-size="40">🧊❄️🧊</text>` : `<text x="${cx}" y="${cy - R + 70}" text-anchor="middle" font-size="40">${lv >= 3 ? "🔥🏜️🔥" : "🌳🏘️🌊"}</text>`}
+      ${lv === 0 ? `<text x="${cx}" y="${cy - R + 62}" text-anchor="middle" font-size="34">☀️🥵 · 🌙🧊</text><text x="${cx}" y="${cy - R + 96}" text-anchor="middle" font-size="17" font-weight="900" fill="#15151a">낮엔 뜨겁고, 밤엔 꽁꽁!</text>` : `<text x="${cx}" y="${cy - R + 70}" text-anchor="middle" font-size="40">${lv >= 3 ? "🔥🏜️🔥" : "🌳🏘️🌊"}</text>`}
       <circle cx="40" cy="40" r="56" fill="#ffd23f" stroke="#15151a" stroke-width="4"/>
       ${[0, 1, 2].map(i => `<line x1="${90 + i * 18}" y1="${70 + i * 8}" x2="${cx - 150 + i * 60}" y2="${cy - R - 6 + i * 2}" stroke="#ffd23f" stroke-width="5" marker-end="url(#ah3)" stroke-linecap="round"/>`).join("")}
       ${arrows}
@@ -498,13 +506,14 @@
         <rect x="-8" y="${tY - 18}" width="44" height="${tH + 36}" rx="22" fill="#fff" stroke="#15151a" stroke-width="3"/>
         <rect x="6" y="${level}" width="16" height="${tY + tH - level + 6}" rx="8" fill="${T < 0 ? "#2a78d6" : T > 16 ? "#e34948" : "#ff8a65"}"/>
         <circle cx="14" cy="${tY + tH + 20}" r="20" fill="${T < 0 ? "#2a78d6" : T > 16 ? "#e34948" : "#ff8a65"}" stroke="#15151a" stroke-width="3"/>
-        <text x="58" y="${level + 10}" font-size="34" font-weight="900" fill="#fff">${T > 0 ? "" : ""}${T}℃</text>
+        <text x="58" y="${level - 18}" font-size="14" font-weight="800" fill="#c9d4ff">평균</text><text x="58" y="${level + 10}" font-size="34" font-weight="900" fill="#fff">${T}℃</text>
       </g>
       <g transform="translate(16,${H - 64})"><rect width="${Math.max(220, names[lv].length * 15 + 30)}" height="48" rx="12" fill="#fff" stroke="#15151a" stroke-width="3"/>
         <text x="16" y="31" font-size="18" font-weight="900" fill="#15151a">${names[lv]}</text></g>
       <g transform="translate(470,26)" font-size="14" font-weight="800">
         <text fill="#ffb59e">↗ 우주로 나가는 열: ${out}</text>
-        <text y="22" fill="#ff8b8b">↩ 담요가 돌려보낸 열: ${back}</text></g>
+        <text y="22" fill="#ff8b8b">↩ 담요가 돌려보낸 열: ${back}</text>
+        ${lv === 0 ? `<text y="48" fill="#fff">🌕 달(대기 거의 없음)</text><text y="68" fill="#fff">낮 100℃↑ 밤 −100℃↓</text>` : ""}</g>
     </svg>`;
   }
 
@@ -530,12 +539,31 @@
       <div class="bento">
         <div class="card span-5 reading tint"><h3>🤔 1℃쯤이야, 별것 아니지 않나요?</h3>
           <p>오늘이 어제보다 1℃ 더운 것은 거의 느껴지지 않아요. 하지만 '지구 평균 기온'은 <b>지구 전체의 바다, 육지, 공기</b>의 온도를 1년 내내 모두 합쳐 평균을 낸 값이에요.</p>
-          <p>바다는 원래 쉽게 뜨거워지지 않고, 겨울에는 추운 날도 많아요. 그런데도 1년 평균이 1℃ 올랐다는 것은 지구 전체가 <b>어마어마하게 많은 열</b>을 품게 되었다는 뜻이에요.</p></div>
+          <p>바다는 원래 쉽게 뜨거워지지 않고, 겨울에는 추운 날도 많아요. 그런데도 1년 평균이 1℃ 올랐다는 것은 지구 전체가 <b>어마어마하게 많은 열</b>을 품게 되었다는 뜻이에요.</p>
+          <div class="facts">
+            <div class="fact"><b>❄️ 약 6℃</b><span>약 2만 년 전 빙하기는 지금보다 평균 6℃쯤 낮았을 뿐인데, 북아메리카와 북유럽이 두꺼운 얼음으로 덮였어요.</span></div>
+            <div class="fact"><b>🌊 91%</b><span>늘어난 열의 대부분은 바다가 품어요. 그래서 바닷물이 따뜻해지고 부피가 커져요.</span></div>
+            <div class="fact"><b>🤒 36.5 → 37.5℃</b><span>내 몸도 평균 체온이 1℃만 올라도 '열이 난다'고 해요.</span></div>
+          </div>
+          <p class="src">출처: IPCC AR6 제1실무그룹 보고서(2021) — 마지막 빙하기 최성기 약 5~7℃ 낮음, 1971–2018년 늘어난 열의 91%를 바다가 흡수</p>
+          ${resHTML("read_1c", "더 알아보기 · 1℃가 왜 무서운지 영상으로 확인해요")}</div>
         <div class="span-7 stack" style="gap:16px">
           ${UI.blanks("c3_avg", "지구 전체의 {0}, {1}, {2} 온도를 모두 합쳐 평균을 냈더니 1℃가 높아졌다는 뜻이다.", ["바다|해양", "육지|땅", "공기|대기"], { title: "빈칸에 알맞은 단어를 채워 보세요.", anyOrder: true })}
           ${UI.long("c3_meaning", { label: "바다는 원래 쉽게 뜨거워지지 않고, 겨울에는 추운 날도 많습니다. 그런데도 1년 전체 평균 기온이 1℃나 올랐다는 것은 지구가 어떻게 변했다는 뜻인가요?", rows: 3 })}
         </div>
       </div>
+
+      ${step("3-2", "왜 하필 1.5℃가 '마지노선'일까?", "'마지노선'은 더 이상 물러설 수 없는 마지막 방어선이라는 뜻이에요. 세계가 1.5℃를 그 선으로 정한 까닭을 알아봐요.")}
+      <div class="why15">
+        <div class="card" style="background:var(--c2-soft)"><span class="num">1</span><h3>🤝 전 세계의 약속, 파리협정</h3>
+          <p>2015년 프랑스 파리에 모인 195개 나라는 지구 기온 상승을 산업화 이전보다 <b>2℃보다 훨씬 낮게</b> 유지하고, <b>1.5℃까지로 막도록 노력</b>하자고 약속했어요.</p></div>
+        <div class="card" style="background:var(--c3-soft)"><span class="num">2</span><h3>📑 과학자들의 경고, IPCC 보고서</h3>
+          <p>2018년 전 세계 과학자들은 1.5℃와 2℃의 피해가 <b>생각보다 훨씬 크게 차이 난다</b>고 발표했어요. 1.5℃를 지키려면 2030년까지 CO₂를 2010년보다 약 <b>45% 줄이고</b>, 2050년 무렵 <b>'순배출 0(탄소중립)'</b>에 도달해야 해요.</p></div>
+        <div class="card" style="background:var(--c1-soft)"><span class="num">3</span><h3>🪑 되돌릴 수 없는 '티핑 포인트'</h3>
+          <p>의자를 뒤로 기울이다 어느 순간 넘어지면 되돌릴 수 없지요? 기온이 오를수록 <b>빙하가 무너지고 산호초가 사라지는 것</b>처럼 한번 시작되면 멈추기 어려운 변화가 일어날 위험이 커져요. 과학자들은 1.5℃를 넘으면 이 위험이 크게 높아진다고 경고해요.</p></div>
+      </div>
+      <div class="card flat" style="padding:16px 18px">${resHTML("read_15", "더 알아보기 · 1.5℃가 왜 중요한지 뉴스와 자료로 확인해요")}
+        <p class="src" style="margin-top:8px">출처: 파리협정 제2조(2015), IPCC 「지구온난화 1.5℃ 특별보고서」(2018) 정책결정자를 위한 요약 C.1, Armstrong McKay 외(2022) Science</p></div>
 
       <div class="card viz">
         <div class="viz-head"><div><span class="tag data">실제 관측 데이터</span><h3 style="margin-top:6px">🚧 우리는 1.5℃ 선에 얼마나 가까워졌을까?</h3>
@@ -549,13 +577,14 @@
       </div>
       ${UI.choice("c3_long", ["그렇다", "아니다, 오랜 기간의 평균을 더 확인해야 한다"], { label: "2024년 한 해의 기온이 1.5℃를 넘었어요. 그렇다면 지구 온난화도 1.5℃를 넘은 걸까요?" })}
 
-      ${step("3-2", "1℃가 바꾸는 사계절", "기온이 1℃ 오르면 사계절의 모습은 어떻게 달라질까요?")}
+      ${step("3-3", "1℃가 바꾸는 사계절", "기온이 1℃ 오르면 사계절의 모습은 어떻게 달라질까요?")}
       <div class="bento">
         <div class="q span-7" data-qid="c3_season">
           <div class="q-title"><span class="qi">Q</span><span>기온이 1℃ 오르면 사계절의 모습은 어떻게 달라질까요? 알맞게 연결해 보세요.</span></div>
           <div class="q-hint">㉠ 폭염이 더 자주, 더 오래, 더 심하게 나타나요. ㉡ 추운 날이 줄고, 이상하게 따뜻한 날이 늘어요. ㉢ 선선해야 할 날도 더워져요. ㉣ 시원해야 할 때도 늦게까지 더워요.</div>
           <div class="match">${[["봄", "#c7f0d0"], ["여름", "#ffd0c2"], ["가을", "#ffe6a8"], ["겨울", "#d6e9ff"]].map(([s, c]) => `<div class="match-row"><span class="season" style="background:${c}">${s}</span>
             <select data-q="c3_season" data-key="${s}"><option value="">— 골라 주세요 —</option><option value="㉠">㉠ 폭염이 더 자주, 더 오래, 더 심하게</option><option value="㉡">㉡ 추운 날이 줄고, 이상하게 따뜻한 날이 늘어</option><option value="㉢">㉢ 선선해야 할 날도 더워져</option><option value="㉣">㉣ 시원해야 할 때도 늦게까지 더워</option></select></div>`).join("")}</div>
+          ${resHTML("c3_season")}
           <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn small" data-check="c3_season">정답 확인</button><div class="feedback" data-fb="c3_season"></div></div>
         </div>
         <div class="span-5 stack" style="gap:16px">
@@ -567,7 +596,7 @@
         <div class="span-6">${UI.long("c3_earthbody", { label: "지구의 온도가 1℃ 올랐을 때, 지구가 느낄 '몸 상태'를 상상해서 써 보세요." })}</div>
       </div>
 
-      ${step("3-3", "1.5℃와 2℃, 고작 0.5℃의 차이?", "슬라이더를 움직여 1.5℃와 2℃일 때의 세상을 비교해 보세요.")}
+      ${step("3-4", "1.5℃와 2℃, 고작 0.5℃의 차이?", "슬라이더를 움직여 1.5℃와 2℃일 때의 세상을 비교해 보세요.")}
       <div class="card viz">
         <div class="viz-head"><div><span class="tag data">IPCC 보고서 데이터</span><h3 style="margin-top:6px">⚖️ 0.5℃가 만드는 차이</h3></div>
           <div class="pill" id="cmpPill" style="font-size:18px;padding:6px 16px"></div></div>
@@ -579,7 +608,7 @@
       ${UI.choice("c3_scary", ["폭염이 더 심해짐", "폭우와 가뭄", "산불 발생", "해수면 상승", "계절의 변화", "공기 정체"], { label: "지구의 평균 기온이 1.5℃ 상승했을 때 일어나는 변화 중, 가장 무섭게 느껴지는 것은 무엇인가요?" })}
       ${UI.long("c3_scary_why", { label: "그 변화가 가장 무섭게 느껴지는 이유를 적어 봅시다.", rows: 3 })}
 
-      ${step("3-4", "기후 시계 확인하기", "지금처럼 온실가스를 내뿜으면, 1.5℃ 선을 넘기까지 남은 시간은?")}
+      ${step("3-5", "기후 시계 확인하기", "지금처럼 온실가스를 내뿜으면, 1.5℃ 선을 넘기까지 남은 시간은?")}
       <div class="bento">
         <div class="span-7 stack" style="gap:16px">
           <div class="clock" id="clock"></div>
@@ -588,6 +617,7 @@
         <div class="card span-5 reading tint"><h3>⏰ 기후 시계는 어떻게 계산할까?</h3>
           <p>과학자들은 1.5℃를 넘지 않으려면(50% 확률) 2025년부터 인류가 내뿜을 수 있는 CO₂가 약 <b>1,300억 톤</b>밖에 남지 않았다고 계산했어요. 이것을 <b>'남은 탄소 예산'</b>이라고 해요.</p>
           <p>그런데 인류는 해마다 약 <b>420억 톤</b>을 내뿜고 있어요. 남은 예산을 지금 속도로 쓰면 얼마나 버틸 수 있을지 계산한 것이 기후 시계예요.</p>
+          <p>📌 뉴스에서는 '1.5℃까지 몇 년 남았다'는 숫자가 조금씩 달라요. 어떤 자료와 계산 방법을 썼는지에 따라 달라지기 때문이에요.</p>
           <p class="src">출처: Forster 외(2025), Indicators of Global Climate Change 2024 — 남은 탄소 예산 130 GtCO₂(2025년 1월 기준), Global Carbon Budget(2025). 계산을 단순화한 교육용 모형이에요. <a href="https://climateclock.world/" target="_blank" rel="noopener">Climate Clock ↗</a></p>
         </div>
       </div>
@@ -734,11 +764,12 @@
       </div>
       <div class="card">
         <a class="linkcard" href="https://coastal.climatecentral.org/" target="_blank" rel="noopener"><span class="ico">🗺️</span><span><b>해수면 상승 & 침수 예측 지도 열기 ↗</b><br><span class="muted">Climate Central 'Coastal Risk Screening Tool' — 연도를 조정하며 우리 동네와 자주 가는 장소를 찾아보세요.</span></span></a>
+        <div class="q-hint" style="margin-top:12px">🧭 <b>지도 보는 방법</b> ① 지도를 열고 연도(Year)를 <b>2050</b>으로 맞춰요. ② 인천·부산·서해안처럼 바다와 가까운 곳을 확대해요. ③ <b>빨간색</b>으로 칠해진 땅은 바닷물이 높아져 <b>해마다 한 번쯤 물에 잠길 위험</b>이 있는 곳이에요. ④ 연도를 2100으로 바꾸면 어떻게 달라지는지도 비교해 봐요.</div>
       </div>
       <div class="bento">
-        <div class="span-4">${UI.blanks("c4_sea", "지구가 뜨거워져 남극과 북극의 얼음이 녹으면 {0}이(가) 높아져요.", ["해수면|바다높이|바닷물높이|해수면높이"], { title: "무엇이 높아질까요?" })}</div>
-        <div class="span-4">${UI.short("c4_place", { label: "침수 예측 지도에서 살펴본 장소 이름", ph: "예) 인천국제공항" })}</div>
-        <div class="span-4">${UI.long("c4_change", { label: "온난화가 계속될 경우, 그 장소는 어떻게 변하나요?", rows: 3 })}</div>
+        <div class="span-5">${UI.blanks("c4_sea", "지구가 뜨거워져 남극과 북극의 얼음이 녹으면 {0}이(가) 높아져요.", ["해수면|바다높이|바닷물높이|해수면높이"], { title: "무엇이 높아질까요?" })}</div>
+        <div class="span-7">${UI.short("c4_place", { label: "침수 예측 지도에서 2050년에 빨간색(물에 잠길 위험)으로 표시된 장소를 하나 찾아 이름을 적어 보세요.", ph: "예) 인천국제공항" })}</div>
+        <div class="span-12">${UI.long("c4_change", { label: "해수면이 높아지면 그 장소는 어떻게 될까요? 어느 부분이 물에 잠기는지, 그곳을 이용하는 사람들의 생활은 어떻게 달라질지 써 보세요.", hint: "💡 2050년과 2100년 지도를 비교해 보세요. 예) 활주로가 잠기면 비행기는? 집이 잠기면 사람들은?", ph: "예) 2050년에는 ○○의 바닷가 쪽이 빨갛게 표시되었다. 물에 잠기면 …" })}</div>
       </div>
 
       ${step("4-3", "✍️ 2050년, 미래 사회 예측하기", "데이터를 근거로, 두 시나리오의 2050년 우리 사회 모습을 예측하는 글을 써 봅시다. 이 글은 선생님께 제출돼요.")}

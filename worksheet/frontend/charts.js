@@ -301,6 +301,7 @@
       if (r.highlight) s += `<rect x="0" y="${y}" width="${W}" height="${rowH}" fill="${cfg.hlFill || "#fff4c7"}" rx="6"/>`;
       s += `<text x="${labW + 26}" y="${y + rowH / 2 + 4.5}" text-anchor="end" font-size="${small ? 12.5 : 14}" font-weight="${r.highlight ? 900 : 700}" fill="${INK}">${esc(r.label)}</text>`;
       if (cfg.rank) s += `<text x="4" y="${y + rowH / 2 + 4.5}" font-size="12.5" font-weight="900" fill="${INK3}">${i + 1}</text>`;
+      if (r.flag === "KR") s += flagKRAt(cfg.rank ? 24 : 4, y + rowH / 2 - 8, 16);
       s += `<rect x="${a}" y="${y + 4}" width="${Math.max(2, b - a)}" height="${bh}" rx="4" fill="${r.color}" stroke="${r.highlight ? INK : "none"}" stroke-width="${r.highlight ? 2 : 0}"/>`;
       const right = r.value >= 0 || allNeg, tx = right ? b + 6 : a - 6;
       s += `<text x="${tx}" y="${y + rowH / 2 + 4.5}" text-anchor="${right ? "start" : "end"}" font-size="${small ? 12 : 13}" font-weight="800" fill="${INK}" style="font-variant-numeric:tabular-nums">${esc(fmt(r.value))}</text>`;
@@ -333,5 +334,23 @@
     return mix(MID, HOT, Math.min(1, v / hi));
   }
 
-  window.Charts = { xy, hbar, diverge, mix, ticks };
+  /* 태극기 — 윈도우에서 🇰🇷 이모지가 'KR' 글자로 보이는 문제를 피하려고 직접 그림 (가로세로 3:2) */
+  function flagKRInner() {
+    const bar = (d, broken) => broken
+      ? `<rect x="${d - 1}" y="-6" width="2" height="5.5"/><rect x="${d - 1}" y="0.5" width="2" height="5.5"/>`
+      : `<rect x="${d - 1}" y="-6" width="2" height="12"/>`;
+    const tri = (ang, b) => `<g transform="rotate(${ang})">${[19, 22, 25].map((d, i) => bar(d, b[i])).join("")}</g>`;
+    const A = 33.69;
+    return `<rect x="-36" y="-24" width="72" height="48" fill="#fff" stroke="#c9c4ba" stroke-width="1.2"/>
+      <g fill="#15151a">${tri(180 + A, [0, 0, 0])}${tri(-A, [1, 0, 1])}${tri(180 - A, [0, 1, 0])}${tri(A, [1, 1, 1])}</g>
+      <g transform="rotate(${A})"><circle r="12" fill="#0047a0"/><path d="M-12,0 A12,12 0 0 1 12,0 Z" fill="#cd2e3a"/>
+      <circle cx="-6" r="6" fill="#cd2e3a"/><circle cx="6" r="6" fill="#0047a0"/></g>`;
+  }
+  // HTML 안에 넣는 태극기 (h = 높이 px)
+  const flagKR = (h = 18) => `<svg class="flag-kr" width="${h * 1.5}" height="${h}" viewBox="-36 -24 72 48" role="img" aria-label="대한민국 국기" style="vertical-align:-0.15em">${flagKRInner()}</svg>`;
+  // SVG 차트 안에 넣는 태극기 (x, y = 왼쪽 위, h = 높이)
+  const flagKRAt = (x, y, h) => `<g transform="translate(${x + h * 0.75},${y + h / 2}) scale(${h / 48})">${flagKRInner()}</g>`;
+
+  window.Charts = { xy, hbar, diverge, mix, ticks, flagKR, flagKRAt };
+  window.flagKR = flagKR;
 })();
