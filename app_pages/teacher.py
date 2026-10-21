@@ -8,6 +8,7 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
+from core.demo import demo_records
 from core.storage import get_store
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -77,6 +78,23 @@ c1, c2 = st.columns([5, 1])
 with c2:
     if st.button("🔄 새로고침", width="stretch"):
         st.rerun()
+
+# ---------------- 발표·시연용 예시 데이터 ----------------
+with st.expander("🎬 발표·시연용 예시 학생 10명 (가상 데이터)"):
+    st.caption("가상의 학생 10명(1~10번)이 모든 문항에 답한 기록을 넣어요. 예시 기록에는 표시가 붙어 있어서, '예시 데이터 지우기'는 실제 학생 기록을 건드리지 않아요.")
+    d1, d2 = st.columns(2)
+    if d1.button("➕ 예시 데이터 넣기", width="stretch", type="primary"):
+        for sid, rec in demo_records().items():
+            store.save(sid, rec)
+        st.success("예시 학생 10명을 넣었어요.")
+        st.rerun()
+    if d2.button("🧹 예시 데이터 지우기", width="stretch"):
+        for sid, rec in store.all().items():
+            if rec.get("demo"):
+                store.delete(sid)
+        st.success("예시 데이터를 지웠어요.")
+        st.rerun()
+
 records = store.all()
 if not records:
     st.info("아직 제출한 학생이 없어요. 학생들이 학습지에서 '📮 선생님께 제출하기'를 누르면 여기에 나타나요.")

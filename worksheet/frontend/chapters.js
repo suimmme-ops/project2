@@ -622,7 +622,7 @@
         </div>
       </div>
       <div class="bento">
-        <div class="span-5">${UI.short("c3_clock", { label: "기후 시계가 보여 주는, 1.5℃까지 남은 시간을 기록해 보세요.", hint: "⏺ 아래 단추를 누르면 지금 시계의 시간이 기록돼요." })}<button class="btn small" id="clockRec" style="margin-top:10px">⏺ 지금 시간 기록하기</button></div>
+        <div class="span-5">${UI.short("c3_clock", { label: "기후 시계가 보여 주는, 1.5℃까지 남은 시간을 기록해 보세요.", hint: "⏺ 아래 단추를 누르면 지금 시계의 시간이 기록돼요.", after: `<button class="btn small" id="clockRec" style="align-self:flex-start">⏺ 지금 시간 기록하기</button>` })}</div>
         <div class="span-7">${UI.long("c3_clock_feel", { label: "지금도 계속 숫자가 줄어들고 있는 기후 시계를 보며 느낀 점을 적어 보세요." })}</div>
       </div>`;
     },

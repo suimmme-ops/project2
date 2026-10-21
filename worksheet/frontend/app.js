@@ -130,6 +130,7 @@
         ${window.resHTML ? resHTML(o.res || id) : ""}
         <input type="text" data-q="${id}" placeholder="${esc(o.ph || "")}" ${o.ans ? `data-ans="${esc(o.ans)}"` : ""}/>
         ${o.ans || o.check ? `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn small" data-check="${id}">정답 확인</button><div class="feedback" data-fb="${id}"></div></div>` : ""}
+        ${o.after || ""}
       </div>`;
     },
     // 문장 속 빈칸: tpl 안의 {0},{1}… 자리에 입력칸
