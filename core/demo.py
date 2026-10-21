@@ -3,7 +3,9 @@
 교사 대시보드 '내려받기 · 관리' 탭의 단추로 넣고 지울 수 있어요.
 예시 기록에는 demo=True 표시가 붙어 있어, 지울 때 실제 학생 기록은 건드리지 않아요.
 """
+import json
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 NAMES = ["김하늘", "이도윤", "박서연", "최준우", "정하은", "강민준", "윤지아", "임시우", "한예린", "오태양"]
 
@@ -394,6 +396,12 @@ A = {
 }
 
 CHAPTER_IDS = ["ch1", "ch2", "ch3", "ch4", "end"]
+QUESTIONS = json.loads((Path(__file__).resolve().parents[1] / "worksheet" / "frontend" / "questions.json").read_text(encoding="utf-8"))["questions"]
+
+# 학생마다 목표 작성률(%)과 건너뛴 문항 — 실제 교실처럼 진행 정도가 다르게.
+# 학생들은 앞 챕터부터 차례로 풀기 때문에, 작성률만큼 앞 문항부터 채워요.
+PROGRESS = [100, 85, 100, 60, 100, 65, 75, 100, 90, 70]
+SKIPPED = [[], ["s4_effort"], [], ["s2_why", "s3_think"], [], ["c1_others"], ["s3_think"], [], ["c3_earthbody"], []]
 
 
 def demo_records(now: datetime | None = None) -> dict:
@@ -401,12 +409,16 @@ def demo_records(now: datetime | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
     out = {}
     for i, name in enumerate(NAMES):
+        keep = round(len(QUESTIONS) * PROGRESS[i] / 100)
+        ids = [q["id"] for q in QUESTIONS[:keep] if q["id"] not in SKIPPED[i]]
         end = now - timedelta(minutes=3 + i * 4)
-        submitted = {ch: (end - timedelta(minutes=(4 - k) * 35)).isoformat(timespec="seconds") for k, ch in enumerate(CHAPTER_IDS)}
+        # 모든 문항을 쓴 챕터만 '제출'한 것으로
+        done = [ch for ch in CHAPTER_IDS if all(q["id"] in ids for q in QUESTIONS if q["ch"] == ch)]
+        submitted = {ch: (end - timedelta(minutes=(len(done) - 1 - k) * 35)).isoformat(timespec="seconds") for k, ch in enumerate(done)}
         out[f"{i + 1:02d}_{name}"] = {
             "number": i + 1,
             "name": name,
-            "answers": {qid: answers[i] for qid, answers in A.items()},
+            "answers": {qid: A[qid][i] for qid in ids},
             "submitted": submitted,
             "updated_at": end.isoformat(timespec="seconds"),
             "demo": True,

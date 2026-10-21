@@ -81,9 +81,13 @@ with c2:
 
 # ---------------- 발표·시연용 예시 데이터 ----------------
 with st.expander("🎬 발표·시연용 예시 학생 10명 (가상 데이터)"):
-    st.caption("가상의 학생 10명(1~10번)이 모든 문항에 답한 기록을 넣어요. 예시 기록에는 표시가 붙어 있어서, '예시 데이터 지우기'는 실제 학생 기록을 건드리지 않아요.")
+    st.caption("가상의 학생 10명(1~10번)의 기록을 넣어요. 실제 교실처럼 작성률이 55~100%로 서로 달라요. 예시 기록에는 표시가 붙어 있어서, '예시 데이터 지우기'는 실제 학생 기록을 건드리지 않아요.")
     d1, d2 = st.columns(2)
     if d1.button("➕ 예시 데이터 넣기", width="stretch", type="primary"):
+        # 예전 예시 기록을 먼저 지워야 이전 답이 남지 않아요(Firestore는 합쳐서 저장하므로)
+        for sid, rec in store.all().items():
+            if rec.get("demo"):
+                store.delete(sid)
         for sid, rec in demo_records().items():
             store.save(sid, rec)
         st.success("예시 학생 10명을 넣었어요.")
